@@ -413,27 +413,27 @@ npm test -- --testPathPattern="feedback|incidents|communications"
 ## Phase 8: Email Service
 
 ### 8.1 Resend Integration
-- [ ] Install `resend`
-- [ ] Create `src/services/email.service.ts`
-- [ ] Initialize Resend client with API key
-- [ ] Implement `sendEmail(to, subject, html)` - basic send
+- [x] Install `resend`
+- [x] Create `src/services/email.service.ts`
+- [x] Initialize Resend client with API key
+- [x] Implement `sendEmail(to, subject, html)` - basic send
 
 ### 8.2 Template Rendering
-- [ ] Create `src/services/template.service.ts`
-- [ ] Implement `renderTemplate(template, variables)` - replace `{{var}}`
-- [ ] Implement `getTemplateVariables(tester)` - compute standard variables
+- [x] Create `src/services/template.service.ts`
+- [x] Implement `renderTemplate(template, variables)` - replace `{{var}}`
+- [x] Implement `getTemplateVariables(tester)` - compute standard variables
 
 ### 8.3 Template Email Method
-- [ ] Implement `sendTemplateEmail(tester, templateName, extraVars)`
-- [ ] Fetch template from Baserow
-- [ ] Render with tester variables
-- [ ] Send via Resend
-- [ ] Log communication to Baserow
+- [x] Implement `sendTemplateEmail(tester, templateName, extraVars)`
+- [x] Fetch template from Baserow
+- [x] Render with tester variables
+- [x] Send via Resend
+- [x] Log communication to Baserow
 
 ### 8.4 Tester Email Endpoint
-- [ ] Add `sendEmail` to testers controller
-- [ ] Create `POST /api/testers/:id/send-email` route
-- [ ] Support template name or custom subject/body
+- [x] Add `sendEmail` to testers controller
+- [x] Create `POST /api/testers/:id/send-email` route
+- [x] Support template name or custom subject/body
 
 ### Phase 8 Tests ✓
 ```typescript
@@ -458,7 +458,7 @@ npm test -- --testPathPattern="email|template"
 ```
 
 ### Phase 8 Completion
-- [ ] All tests pass
+- [x] All tests pass
 - [ ] `git commit -m "Phase 8: Email service"`
 - [ ] `git push origin main`
 - [ ] **After successful push: check all boxes in 8.1, 8.2, 8.3, 8.4 above**

@@ -20,7 +20,7 @@ const envSchema = z.object({
   BASEROW_TEMPLATES_TABLE_ID: z.string().min(1),
 
   // Resend
-  RESEND_API_KEY: z.string().min(1),
+  RESEND_API_KEY: z.string().optional().default(''),
   EMAIL_FROM: z.string().min(1),
 
   // URLs

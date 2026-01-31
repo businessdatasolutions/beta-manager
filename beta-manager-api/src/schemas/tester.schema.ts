@@ -23,6 +23,15 @@ export const updateStageSchema = z.object({
   stage: z.enum(TESTER_STAGES),
 });
 
+export const sendEmailSchema = z.object({
+  template_name: z.string().optional(),
+  custom_subject: z.string().max(200).optional(),
+  custom_body: z.string().optional(),
+}).refine(
+  (data) => data.template_name || (data.custom_subject && data.custom_body),
+  { message: 'Either template_name or both custom_subject and custom_body are required' }
+);
+
 export const testerQuerySchema = z.object({
   stage: z.enum(TESTER_STAGES).optional(),
   source: z.enum(TESTER_SOURCES).optional(),
@@ -36,3 +45,4 @@ export type CreateTesterInput = z.infer<typeof createTesterSchema>;
 export type UpdateTesterInput = z.infer<typeof updateTesterSchema>;
 export type UpdateStageInput = z.infer<typeof updateStageSchema>;
 export type TesterQueryInput = z.infer<typeof testerQuerySchema>;
+export type SendEmailInput = z.infer<typeof sendEmailSchema>;

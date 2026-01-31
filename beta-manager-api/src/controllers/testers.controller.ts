@@ -6,7 +6,9 @@ import {
   UpdateTesterInput,
   UpdateStageInput,
   TesterQueryInput,
+  SendEmailInput,
 } from '../schemas/tester.schema';
+import { templateService } from '../services/template.service';
 import {
   BaserowTester,
   BaserowFeedback,
@@ -325,6 +327,49 @@ export async function getTesterTimeline(
     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     res.json({ timeline });
+  } catch (error) {
+    if (error instanceof BaserowError && error.statusCode === 404) {
+      return next(new NotFoundError('Tester not found'));
+    }
+    next(error);
+  }
+}
+
+export async function sendEmail(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const id = parseInt(req.params.id as string, 10);
+    if (isNaN(id)) {
+      throw new BadRequestError('Invalid tester ID');
+    }
+
+    const { template_name, custom_subject, custom_body } = req.body as SendEmailInput;
+
+    // Get tester
+    const tester = await baserow.getRow<BaserowTester>('testers', id);
+
+    let result;
+    if (template_name) {
+      // Send template email
+      result = await templateService.sendTemplateEmail(tester, template_name);
+    } else if (custom_subject && custom_body) {
+      // Send custom email
+      result = await templateService.sendCustomEmail(tester, custom_subject, custom_body);
+    } else {
+      throw new BadRequestError('Either template_name or both custom_subject and custom_body are required');
+    }
+
+    if (!result.success) {
+      throw new BadRequestError(result.error || 'Failed to send email');
+    }
+
+    res.json({
+      success: true,
+      message_id: result.messageId,
+    });
   } catch (error) {
     if (error instanceof BaserowError && error.statusCode === 404) {
       return next(new NotFoundError('Tester not found'));
