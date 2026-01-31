@@ -506,23 +506,23 @@ npm test -- --testPathPattern=dashboard
 ## Phase 10: Cron Jobs
 
 ### 10.1 Job Scheduler
-- [ ] Install `node-cron`
-- [ ] Create `src/jobs/index.ts` - job scheduler initialization
-- [ ] Call scheduler from `src/index.ts` after server starts
+- [x] Install `node-cron`
+- [x] Create `src/jobs/index.ts` - job scheduler initialization
+- [x] Call scheduler from `src/index.ts` after server starts
 
 ### 10.2 Daily Email Job
-- [ ] Create `src/jobs/dailyEmailJob.ts`
-- [ ] Schedule at 9:00 AM daily
-- [ ] Query active testers
-- [ ] Send day 3, 7, 12, 14 emails based on `started_at`
-- [ ] Update stage to 'completed' on day 14
+- [x] Create `src/jobs/dailyEmailJob.ts`
+- [x] Schedule at 9:00 AM daily
+- [x] Query active testers
+- [x] Send day 3, 7, 12, 14 emails based on `started_at`
+- [x] Update stage to 'completed' on day 14
 
 ### 10.3 Inactivity Check Job
-- [ ] Create `src/jobs/inactivityCheck.ts`
-- [ ] Schedule at 10:00 AM daily
-- [ ] Query active testers inactive 3+ days
-- [ ] Create dropout incident if not exists
-- [ ] Optionally send re-engagement email
+- [x] Create `src/jobs/inactivityCheck.ts`
+- [x] Schedule at 10:00 AM daily
+- [x] Query active testers inactive 3+ days
+- [x] Create dropout incident if not exists
+- [x] Optionally send re-engagement email
 
 ### Phase 10 Tests ✓
 ```typescript
@@ -547,10 +547,10 @@ npm test -- --testPathPattern=jobs
 ```
 
 ### Phase 10 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 10: Cron jobs"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 10.1, 10.2, 10.3 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 10: Cron jobs"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 10.1, 10.2, 10.3 above**
 
 ---
 
