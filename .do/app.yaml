@@ -63,9 +63,9 @@ services:
 static_sites:
   - name: web
     environment_slug: node-js
-    build_command: cd beta-manager-web && npm install && npm run build
-    output_dir: beta-manager-web/dist
-    source_dir: /
+    build_command: npm install && npm run build
+    output_dir: dist
+    source_dir: beta-manager-web
     github:
       repo: businessdatasolutions/beta-manager
       branch: main
