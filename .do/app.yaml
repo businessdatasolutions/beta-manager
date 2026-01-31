@@ -3,8 +3,8 @@ region: ams
 
 services:
   - name: api
-    dockerfile_path: Dockerfile
-    source_dir: beta-manager-api
+    dockerfile_path: beta-manager-api/Dockerfile
+    source_dir: /
     github:
       repo: businessdatasolutions/beta-manager
       branch: main
