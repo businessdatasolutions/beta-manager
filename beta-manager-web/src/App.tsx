@@ -21,7 +21,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.PROD ? '/beta-manager' : '/'}>
         <Routes>
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
