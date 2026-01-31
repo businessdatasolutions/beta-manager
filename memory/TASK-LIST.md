@@ -404,9 +404,9 @@ npm test -- --testPathPattern="feedback|incidents|communications"
 
 ### Phase 7 Completion
 - [x] All tests pass
-- [ ] `git commit -m "Phase 7: Feedback and incidents API"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 7.1, 7.2, 7.3 above**
+- [x] `git commit -m "Phase 7: Feedback and incidents API"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 7.1, 7.2, 7.3 above**
 
 ---
 
