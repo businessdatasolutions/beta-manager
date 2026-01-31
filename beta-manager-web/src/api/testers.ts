@@ -123,9 +123,9 @@ export async function getTesterTimeline(
 }
 
 export interface SendEmailParams {
-  templateName?: string;
-  subject?: string;
-  body?: string;
+  template_name?: string;
+  custom_subject?: string;
+  custom_body?: string;
 }
 
 export async function sendTesterEmail(

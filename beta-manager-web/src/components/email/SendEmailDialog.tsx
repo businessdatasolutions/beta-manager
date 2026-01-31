@@ -39,7 +39,7 @@ export function SendEmailDialog({
   function handleSend() {
     if (mode === 'template' && selectedTemplate) {
       sendEmail.mutate(
-        { id: tester.id, params: { templateName: selectedTemplate } },
+        { id: tester.id, params: { template_name: selectedTemplate } },
         {
           onSuccess: () => {
             onSuccess?.();
@@ -51,7 +51,7 @@ export function SendEmailDialog({
       sendEmail.mutate(
         {
           id: tester.id,
-          params: { subject: customSubject, body: customBody },
+          params: { custom_subject: customSubject, custom_body: customBody },
         },
         {
           onSuccess: () => {
