@@ -1,0 +1,5 @@
+tester,type,severity,title,content,status,device_info,app_version,screenshot_url,admin_notes
+"1","bug","major","App crashes on receipt scan","When I try to scan a receipt with low light, the app crashes immediately.","new","Pixel 7, Android 14","1.2.0 (45)","","Need to investigate camera handling"
+"1","feature_request","minor","Dark mode support","Would love to have a dark mode option for night scanning.","in_review","Pixel 7, Android 14","1.2.0 (45)","",""
+"3","ux_issue","minor","Confusing navigation","Hard to find where to view my scanned receipts history.","addressed","Samsung S23, Android 13","1.2.0 (45)","","Updated nav in v1.2.1"
+"4","general","","Great app overall","Really enjoying the app so far. Makes receipt tracking so much easier!","closed","iPhone 14, iOS 17","1.2.0 (45)","","Positive feedback"

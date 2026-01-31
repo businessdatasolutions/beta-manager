@@ -1,0 +1,5 @@
+tester,type,severity,title,description,status,source,crash_id,resolved_at,resolution_notes
+"1","crash","critical","NullPointerException in CameraService","App crashes when camera permission is revoked mid-scan.","investigating","crashlytics","crash_abc123","","Reviewing camera lifecycle handling"
+"3","dropout","major","Bob Wilson inactive for 5 days","Tester has not shown activity since 2024-01-15","open","automated","","",""
+"","bug","minor","Receipt text extraction fails for thermal paper","OCR accuracy drops significantly for thermal receipts.","resolved","manual","","2024-01-18","Added contrast enhancement for thermal paper"
+"2","ux_complaint","minor","Onboarding too long","User complained that the initial tutorial is too lengthy.","open","manual","","",""

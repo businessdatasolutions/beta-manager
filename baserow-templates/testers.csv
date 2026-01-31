@@ -1,0 +1,6 @@
+name,email,phone,source,stage,invited_at,started_at,last_active,completed_at,notes
+"John Doe","john.doe@example.com","+31612345678","email","prospect","","","","","Initial contact via email campaign"
+"Jane Smith","jane.smith@example.com","+31687654321","linkedin","invited","2024-01-15","","","","Reached out on LinkedIn"
+"Bob Wilson","bob.wilson@example.com","","referral","active","2024-01-10","2024-01-12","2024-01-20","","Referred by Jane Smith"
+"Alice Brown","alice.brown@example.com","+31698765432","whatsapp","completed","2024-01-01","2024-01-03","2024-01-17","2024-01-17","Completed full test cycle"
+"Charlie Davis","charlie.davis@example.com","","other","declined","2024-01-08","","","","Not interested at this time"

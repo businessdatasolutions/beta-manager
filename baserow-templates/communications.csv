@@ -1,0 +1,6 @@
+tester,channel,direction,subject,content,template_name,status,sent_at,opened_at,clicked_at
+"1","email","outbound","Welcome to Bonnenmonster Beta!","Hi John, Welcome to the Bonnenmonster beta program...","welcome","opened","2024-01-15T09:00:00Z","2024-01-15T10:30:00Z",""
+"1","email","outbound","Day 3 Check-in","Hi John, How's your experience with Bonnenmonster so far?","day_3_checkin","clicked","2024-01-18T09:00:00Z","2024-01-18T11:00:00Z","2024-01-18T11:05:00Z"
+"2","linkedin","outbound","","Hi Jane, Thanks for your interest in testing Bonnenmonster...","","sent","2024-01-14T14:00:00Z","","",
+"3","email","inbound","Re: Day 7 Survey","Thanks for checking in. Here's my feedback...","","delivered","2024-01-19T15:30:00Z","",""
+"4","whatsapp","outbound","","Reminder: Your beta test period ends in 2 days!","","delivered","2024-01-15T10:00:00Z","",""
