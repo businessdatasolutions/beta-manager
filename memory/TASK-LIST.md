@@ -557,14 +557,14 @@ npm test -- --testPathPattern=jobs
 ## Phase 11: Public Routes & Health Check
 
 ### 11.1 Public Feedback Endpoint
-- [ ] Create `src/routes/public.routes.ts`
-- [ ] `POST /public/feedback` - accept feedback without auth
-- [ ] Apply strict rate limiting
-- [ ] Validate tester ID exists
-- [ ] Create feedback and acknowledgment
+- [x] Create `src/routes/public.routes.ts`
+- [x] `POST /public/feedback` - accept feedback without auth
+- [x] Apply strict rate limiting
+- [x] Validate tester ID exists
+- [x] Create feedback and acknowledgment
 
 ### 11.2 Health Check
-- [ ] `GET /public/health` - returns status, uptime, timestamp
+- [x] `GET /public/health` - returns status, uptime, timestamp
 
 ### Phase 11 Tests ✓
 ```typescript
@@ -580,10 +580,10 @@ npm test -- --testPathPattern=public
 ```
 
 ### Phase 11 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 11: Public routes and health check"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 11.1, 11.2 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 11: Public routes and health check"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 11.1, 11.2 above**
 
 ---
 
