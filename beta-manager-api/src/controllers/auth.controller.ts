@@ -5,8 +5,8 @@ import { signToken } from '../utils/jwt';
 import { UnauthorizedError } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 
-// Use 'none' for cross-domain cookies (frontend on different domain than backend)
-const sameSiteValue: 'none' | 'lax' = process.env.NODE_ENV === 'production' ? 'none' : 'lax';
+// Use 'lax' for same-domain deployment (frontend and backend on same Digital Ocean domain)
+const sameSiteValue: 'strict' | 'lax' = process.env.NODE_ENV === 'production' ? 'lax' : 'lax';
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
