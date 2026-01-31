@@ -30,7 +30,7 @@ export async function getStats(
 
     // Count active testers
     const activeCount = testers.filter(
-      (t) => t.stage?.value && ACTIVE_STAGES.includes(t.stage.value)
+      (t) => t.stage && ACTIVE_STAGES.includes(t.stage)
     ).length;
 
     // Fetch open incidents count
@@ -42,10 +42,10 @@ export async function getStats(
 
     // Calculate retention rate (completed / started)
     const startedCount = testers.filter(
-      (t) => t.stage?.value && STARTED_STAGES.includes(t.stage.value)
+      (t) => t.stage && STARTED_STAGES.includes(t.stage)
     ).length;
     const completedCount = testers.filter(
-      (t) => t.stage?.value && COMPLETED_STAGES.includes(t.stage.value)
+      (t) => t.stage && COMPLETED_STAGES.includes(t.stage)
     ).length;
     const retentionRate = startedCount > 0 ? Math.round((completedCount / startedCount) * 100) : 0;
 
@@ -82,7 +82,7 @@ export async function getFunnel(
     }
 
     for (const tester of testers) {
-      const stage = tester.stage?.value;
+      const stage = tester.stage;
       if (stage && stage in stageCounts) {
         stageCounts[stage]++;
       }
@@ -197,7 +197,7 @@ export async function getAlerts(
     // Find inactive testers (active stage but inactive for 3+ days)
     const inactiveTesters = testersResult.results
       .filter((t) => {
-        const stage = t.stage?.value;
+        const stage = t.stage;
         if (!stage || !ACTIVE_STAGES.includes(stage)) return false;
         return isInactive(t.last_active, INACTIVITY_THRESHOLD_DAYS);
       })
@@ -205,7 +205,7 @@ export async function getAlerts(
         id: t.id,
         name: t.name,
         email: t.email,
-        stage: t.stage?.value,
+        stage: t.stage,
         last_active: t.last_active,
       }));
 

@@ -94,7 +94,7 @@ export async function processTesterInactivity(tester: BaserowTester): Promise<{
   const testerId = tester.id;
 
   // Check if tester is in an active stage
-  const stage = tester.stage?.value;
+  const stage = tester.stage;
   if (!stage || !ACTIVE_STAGES.includes(stage)) {
     return { testerId, action: 'not_inactive' };
   }
@@ -156,7 +156,7 @@ export async function runInactivityCheck(): Promise<{
     });
 
     const testers = result.results.filter((t) => {
-      const stage = t.stage?.value;
+      const stage = t.stage;
       return stage && ACTIVE_STAGES.includes(stage);
     });
 

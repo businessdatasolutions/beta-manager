@@ -33,7 +33,7 @@ export async function processTester(tester: BaserowTester): Promise<{
   }
 
   // Skip if not in active stage
-  const stage = tester.stage?.value;
+  const stage = tester.stage;
   if (!stage || !ACTIVE_STAGES.includes(stage)) {
     return { testerId, action: 'skipped', error: `Stage ${stage} not in active stages` };
   }
@@ -116,7 +116,7 @@ export async function runDailyEmailJob(): Promise<{
     });
 
     const testers = result.results.filter((t) => {
-      const stage = t.stage?.value;
+      const stage = t.stage;
       return stage && ACTIVE_STAGES.includes(stage) && t.started_at;
     });
 
