@@ -38,22 +38,41 @@ export async function listIncidents(
   try {
     const { tester_id, type, status, severity, page = 1, size = 20 } = req.query as unknown as IncidentQueryInput;
 
+    // Only pass non-single-select filters to Baserow
     const filters: Record<string, string> = {};
     if (tester_id) filters.tester = tester_id.toString();
-    if (type) filters.type = type;
-    if (status) filters.status = status;
-    if (severity) filters.severity = severity;
+    // Note: type, status, severity are single select fields - filtered in memory below
+
+    // Fetch more records for in-memory filtering
+    const fetchSize = (type || status || severity) ? 200 : size;
 
     const result = await baserow.listRows<BaserowIncident>('incidents', {
-      page,
-      size,
+      page: (type || status || severity) ? 1 : page,
+      size: fetchSize,
       orderBy: '-created_on',
       filters: Object.keys(filters).length > 0 ? filters : undefined,
     });
 
+    // In-memory filtering for single select fields
+    let filtered = result.results;
+    if (type) {
+      filtered = filtered.filter(i => i.type?.value === type);
+    }
+    if (status) {
+      filtered = filtered.filter(i => i.status?.value === status);
+    }
+    if (severity) {
+      filtered = filtered.filter(i => i.severity?.value === severity);
+    }
+
+    // Apply pagination to filtered results
+    const totalFiltered = filtered.length;
+    const startIndex = (page - 1) * size;
+    const paginatedResults = filtered.slice(startIndex, startIndex + size);
+
     res.json({
-      results: result.results.map(transformIncident),
-      count: result.count,
+      results: paginatedResults.map(transformIncident),
+      count: totalFiltered,
       page,
       size,
     });

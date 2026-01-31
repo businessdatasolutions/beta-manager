@@ -19,8 +19,8 @@ export interface BaserowTester extends BaserowRow {
   name: string;
   email: string;
   phone?: string;
-  source: { id: number; value: string; color: string };
-  stage: { id: number; value: string; color: string };
+  source?: string;  // Plain text field in Baserow
+  stage?: string;   // Plain text field in Baserow
   invited_at?: string;
   started_at?: string;
   last_active?: string;

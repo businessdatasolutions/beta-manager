@@ -120,11 +120,16 @@ class BaserowService {
       if (options?.orderBy) params.append('order_by', options.orderBy);
 
       // Baserow filter format: filter__field__type=value
-      // Use 'contains' for more flexible matching with single select fields
+      // Note: Single select fields (status, type, stage, etc.) don't support standard filters
+      // They are filtered in-memory by the controller after fetching
+      const singleSelectFields = ['status', 'type', 'severity', 'stage', 'source', 'channel', 'direction'];
       if (options?.filters) {
         Object.entries(options.filters).forEach(([field, value]) => {
           if (value !== undefined && value !== null && value !== '') {
-            params.append(`filter__${field}__contains`, String(value));
+            // Skip single select fields - they'll be filtered in the controller
+            if (!singleSelectFields.includes(field)) {
+              params.append(`filter__${field}__equal`, String(value));
+            }
           }
         });
       }
