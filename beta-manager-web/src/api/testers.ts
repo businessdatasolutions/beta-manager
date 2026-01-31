@@ -89,13 +89,37 @@ export async function updateTesterStage(
   return response.data;
 }
 
+interface BackendTimelineItem {
+  type: 'communication' | 'feedback' | 'incident' | 'stage_change';
+  id: number;
+  date: string;
+  title: string;
+  description: string;
+  metadata?: Record<string, unknown>;
+}
+
+interface BackendTimelineResponse {
+  timeline: BackendTimelineItem[];
+}
+
 export async function getTesterTimeline(
   id: number
 ): Promise<TesterTimelineItem[]> {
-  const response = await apiClient.get<TesterTimelineItem[]>(
+  const response = await apiClient.get<BackendTimelineResponse>(
     `/api/testers/${id}/timeline`
   );
-  return response.data;
+  // Transform backend format to frontend format
+  return (response.data.timeline || []).map((item) => ({
+    id: item.id,
+    type: item.type,
+    timestamp: item.date,
+    data: {
+      subject: item.title,
+      content: item.description,
+      channel: 'email',
+      ...item.metadata,
+    } as TesterTimelineItem['data'],
+  }));
 }
 
 export interface SendEmailParams {
