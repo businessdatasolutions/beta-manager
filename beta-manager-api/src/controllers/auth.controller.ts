@@ -8,7 +8,8 @@ import { logger } from '../utils/logger';
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict' as const,
+  // Use 'none' for cross-domain cookies (frontend on different domain than backend)
+  sameSite: (process.env.NODE_ENV === 'production' ? 'none' : 'lax') as const,
   maxAge: 24 * 60 * 60 * 1000, // 24 hours
 };
 
@@ -46,7 +47,7 @@ export function logout(_req: Request, res: Response) {
   res.clearCookie('token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
   });
 
   res.json({ success: true });
