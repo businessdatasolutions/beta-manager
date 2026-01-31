@@ -115,11 +115,11 @@ export async function getActivity(
         size: limit,
       }),
       baserow.listRows<BaserowFeedback>('feedback', {
-        orderBy: '-id', // Use id for ordering (auto-increment, newest first)
+        orderBy: '-created_on',
         size: limit,
       }),
       baserow.listRows<BaserowIncident>('incidents', {
-        orderBy: '-id', // Use id for ordering (auto-increment, newest first)
+        orderBy: '-created_on',
         size: limit,
       }),
     ]);
