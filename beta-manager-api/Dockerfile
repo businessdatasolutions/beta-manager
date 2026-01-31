@@ -3,15 +3,15 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files (from beta-manager-api directory since build context is repo root)
-COPY beta-manager-api/package*.json ./
+# Copy package files
+COPY package*.json ./
 
 # Install all dependencies (including devDependencies for build)
 RUN npm install
 
 # Copy source code
-COPY beta-manager-api/tsconfig.json ./
-COPY beta-manager-api/src ./src
+COPY tsconfig.json ./
+COPY src ./src
 
 # Build TypeScript
 RUN npm run build
@@ -22,7 +22,7 @@ FROM node:20-alpine AS production
 WORKDIR /app
 
 # Copy package files
-COPY beta-manager-api/package*.json ./
+COPY package*.json ./
 
 # Install only production dependencies
 RUN npm install --omit=dev
