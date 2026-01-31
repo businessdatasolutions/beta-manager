@@ -67,7 +67,7 @@ export async function listTesters(
     const result = await baserow.listRows<BaserowTester>('testers', {
       page,
       size,
-      orderBy: orderBy || '-created_on',
+      orderBy: orderBy || undefined,
       filters: Object.keys(filters).length > 0 ? filters : undefined,
     });
 

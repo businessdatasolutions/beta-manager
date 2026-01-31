@@ -3,7 +3,7 @@ region: ams
 
 services:
   - name: api
-    dockerfile_path: beta-manager-api/Dockerfile
+    dockerfile_path: Dockerfile
     source_dir: beta-manager-api
     github:
       repo: businessdatasolutions/beta-manager
@@ -62,6 +62,7 @@ services:
 
 static_sites:
   - name: web
+    environment_slug: node-js
     build_command: cd beta-manager-web && npm install && npm run build
     output_dir: beta-manager-web/dist
     source_dir: /
