@@ -28,7 +28,15 @@ const envSchema = z.object({
   PLAY_STORE_LINK: z.string().url().optional(),
 });
 
-function loadEnv() {
+export type Env = z.infer<typeof envSchema>;
+
+let cachedEnv: Env | null = null;
+
+export function getEnv(): Env {
+  if (cachedEnv) {
+    return cachedEnv;
+  }
+
   const parsed = envSchema.safeParse(process.env);
 
   if (!parsed.success) {
@@ -36,7 +44,13 @@ function loadEnv() {
     throw new Error('Invalid environment variables');
   }
 
-  return parsed.data;
+  cachedEnv = parsed.data;
+  return cachedEnv;
 }
 
-export const env = loadEnv();
+// Lazy proxy that validates on first access
+export const env = new Proxy({} as Env, {
+  get(_target, prop: string) {
+    return getEnv()[prop as keyof Env];
+  },
+});
