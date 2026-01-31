@@ -590,26 +590,26 @@ npm test -- --testPathPattern=public
 ## Phase 12: Frontend API Client & Auth
 
 ### 12.1 API Client
-- [ ] Create `src/api/client.ts` - axios instance with `withCredentials`
-- [ ] Add response interceptor for 401 → redirect to login
-- [ ] Create `src/api/auth.ts` - login, logout, me functions
+- [x] Create `src/api/client.ts` - axios instance with `withCredentials`
+- [x] Add response interceptor for 401 → redirect to login
+- [x] Create `src/api/auth.ts` - login, logout, me functions
 
 ### 12.2 Auth Store (Zustand)
-- [ ] Create `src/store/authStore.ts`
-- [ ] State: `isAuthenticated`, `email`, `isLoading`
-- [ ] Actions: `login`, `logout`, `checkAuth`
-- [ ] Persist email to localStorage
+- [x] Create `src/store/authStore.ts`
+- [x] State: `isAuthenticated`, `email`, `isLoading`
+- [x] Actions: `login`, `logout`, `checkAuth`
+- [x] Persist email to localStorage
 
 ### 12.3 Protected Route Component
-- [ ] Create `src/components/layout/ProtectedRoute.tsx`
-- [ ] Check auth state, redirect to `/login` if not authenticated
-- [ ] Show loading spinner while checking
+- [x] Create `src/components/layout/ProtectedRoute.tsx`
+- [x] Check auth state, redirect to `/login` if not authenticated
+- [x] Show loading spinner while checking
 
 ### 12.4 Login Page
-- [ ] Create `src/pages/LoginPage.tsx`
-- [ ] Email and password form
-- [ ] Error display for invalid credentials
-- [ ] Redirect to dashboard on success
+- [x] Create `src/pages/LoginPage.tsx`
+- [x] Email and password form
+- [x] Error display for invalid credentials
+- [x] Redirect to dashboard on success
 
 ### Phase 12 Tests ✓
 ```typescript
@@ -632,10 +632,10 @@ npm test
 ```
 
 ### Phase 12 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 12: Frontend API client and auth"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 12.1, 12.2, 12.3, 12.4 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 12: Frontend API client and auth"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 12.1, 12.2, 12.3, 12.4 above**
 
 ---
 
