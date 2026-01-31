@@ -10,6 +10,9 @@ export const apiClient = axios.create({
   },
 });
 
+// Base path for the app (must match BrowserRouter basename)
+const BASE_PATH = import.meta.env.PROD ? '/beta-manager' : '';
+
 // Response interceptor for handling 401 errors
 apiClient.interceptors.response.use(
   (response) => response,
@@ -18,7 +21,7 @@ apiClient.interceptors.response.use(
       // Clear any stored auth state and redirect to login
       // Don't redirect if already on login page
       if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login';
+        window.location.href = `${BASE_PATH}/login`;
       }
     }
     return Promise.reject(error);
