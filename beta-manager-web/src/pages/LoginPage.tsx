@@ -5,12 +5,18 @@ import { useAuthStore } from '../store/authStore';
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, isLoading, error, clearError, isAuthenticated } = useAuthStore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { login, error, clearError, isAuthenticated, checkAuth } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
 
   // Get the redirect destination (default to dashboard)
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/';
+
+  // Check auth on mount (in case user is already logged in)
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -22,8 +28,10 @@ export function LoginPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     clearError();
+    setIsSubmitting(true);
 
     const success = await login({ email, password });
+    setIsSubmitting(false);
     if (success) {
       navigate(from, { replace: true });
     }
@@ -109,10 +117,10 @@ export function LoginPage() {
           <div>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isSubmitting}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? (
+              {isSubmitting ? (
                 <span className="flex items-center">
                   <svg
                     className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
