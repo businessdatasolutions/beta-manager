@@ -366,21 +366,21 @@ npm test -- --testPathPattern=testers
 ## Phase 7: Feedback & Incidents API
 
 ### 7.1 Feedback Controller & Routes
-- [ ] Create `src/controllers/feedback.controller.ts`
-- [ ] Implement CRUD: list, get, create, update, delete
-- [ ] Create `src/routes/feedback.routes.ts`
-- [ ] Wire up all endpoints with validation
+- [x] Create `src/controllers/feedback.controller.ts`
+- [x] Implement CRUD: list, get, create, update, delete
+- [x] Create `src/routes/feedback.routes.ts`
+- [x] Wire up all endpoints with validation
 
 ### 7.2 Incidents Controller & Routes
-- [ ] Create `src/controllers/incidents.controller.ts`
-- [ ] Implement CRUD: list, get, create, update, delete
-- [ ] Create `src/routes/incidents.routes.ts`
-- [ ] Wire up all endpoints with validation
+- [x] Create `src/controllers/incidents.controller.ts`
+- [x] Implement CRUD: list, get, create, update, delete
+- [x] Create `src/routes/incidents.routes.ts`
+- [x] Wire up all endpoints with validation
 
 ### 7.3 Communications Controller & Routes
-- [ ] Create `src/controllers/communications.controller.ts`
-- [ ] Implement: list (with tester filter), get, create (log manual comms)
-- [ ] Create `src/routes/communications.routes.ts`
+- [x] Create `src/controllers/communications.controller.ts`
+- [x] Implement: list (with tester filter), get, create (log manual comms)
+- [x] Create `src/routes/communications.routes.ts`
 
 ### Phase 7 Tests ✓
 ```typescript
@@ -403,7 +403,7 @@ npm test -- --testPathPattern="feedback|incidents|communications"
 ```
 
 ### Phase 7 Completion
-- [ ] All tests pass
+- [x] All tests pass
 - [ ] `git commit -m "Phase 7: Feedback and incidents API"`
 - [ ] `git push origin main`
 - [ ] **After successful push: check all boxes in 7.1, 7.2, 7.3 above**
