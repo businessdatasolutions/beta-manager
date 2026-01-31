@@ -19,8 +19,11 @@ const envSchema = z.object({
   BASEROW_COMMUNICATIONS_TABLE_ID: z.string().min(1),
   BASEROW_TEMPLATES_TABLE_ID: z.string().min(1),
 
-  // Resend
-  RESEND_API_KEY: z.string().optional().default(''),
+  // Email (SMTP via Nodemailer)
+  SMTP_HOST: z.string().default('smtp.gmail.com'),
+  SMTP_PORT: z.string().default('587'),
+  SMTP_USER: z.string().min(1),
+  SMTP_PASS: z.string().min(1),
   EMAIL_FROM: z.string().min(1),
 
   // URLs
