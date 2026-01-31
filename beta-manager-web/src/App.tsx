@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
+import { AppLayout } from './components/layout/AppLayout';
 import { LoginPage } from './pages/LoginPage';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './components/ui';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,45 +17,95 @@ const queryClient = new QueryClient({
 // Placeholder components for protected pages
 function DashboardPage() {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <p className="mt-2 text-gray-600">Coming in Phase 14</p>
+    <div>
+      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Welcome to Beta Manager</CardTitle>
+          <CardDescription>Dashboard content coming in Phase 14</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600">
+            This dashboard will display key metrics about your beta testing program.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
 function TestersPage() {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold">Testers</h1>
-      <p className="mt-2 text-gray-600">Coming in Phase 15</p>
+    <div>
+      <h1 className="text-2xl font-bold mb-6">Testers</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Tester Management</CardTitle>
+          <CardDescription>Coming in Phase 15</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600">
+            Manage your beta testers, track their progress, and communicate with them.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
 function TesterDetailPage() {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold">Tester Detail</h1>
-      <p className="mt-2 text-gray-600">Coming in Phase 15</p>
+    <div>
+      <h1 className="text-2xl font-bold mb-6">Tester Detail</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Tester Profile</CardTitle>
+          <CardDescription>Coming in Phase 15</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600">
+            View detailed information about a specific tester.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
 function FeedbackPage() {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold">Feedback</h1>
-      <p className="mt-2 text-gray-600">Coming in Phase 16</p>
+    <div>
+      <h1 className="text-2xl font-bold mb-6">Feedback</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Feedback Management</CardTitle>
+          <CardDescription>Coming in Phase 16</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600">
+            Review and manage feedback submitted by your beta testers.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
 function IncidentsPage() {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold">Incidents</h1>
-      <p className="mt-2 text-gray-600">Coming in Phase 16</p>
+    <div>
+      <h1 className="text-2xl font-bold mb-6">Incidents</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Incident Tracking</CardTitle>
+          <CardDescription>Coming in Phase 16</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600">
+            Track and resolve incidents reported during beta testing.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -66,12 +118,14 @@ function App() {
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
 
-          {/* Protected routes */}
+          {/* Protected routes with layout */}
           <Route
             path="/"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <AppLayout>
+                  <DashboardPage />
+                </AppLayout>
               </ProtectedRoute>
             }
           />
@@ -79,7 +133,9 @@ function App() {
             path="/testers"
             element={
               <ProtectedRoute>
-                <TestersPage />
+                <AppLayout>
+                  <TestersPage />
+                </AppLayout>
               </ProtectedRoute>
             }
           />
@@ -87,7 +143,9 @@ function App() {
             path="/testers/:id"
             element={
               <ProtectedRoute>
-                <TesterDetailPage />
+                <AppLayout>
+                  <TesterDetailPage />
+                </AppLayout>
               </ProtectedRoute>
             }
           />
@@ -95,7 +153,9 @@ function App() {
             path="/feedback"
             element={
               <ProtectedRoute>
-                <FeedbackPage />
+                <AppLayout>
+                  <FeedbackPage />
+                </AppLayout>
               </ProtectedRoute>
             }
           />
@@ -103,7 +163,9 @@ function App() {
             path="/incidents"
             element={
               <ProtectedRoute>
-                <IncidentsPage />
+                <AppLayout>
+                  <IncidentsPage />
+                </AppLayout>
               </ProtectedRoute>
             }
           />
