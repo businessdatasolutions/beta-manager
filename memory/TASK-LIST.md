@@ -255,25 +255,25 @@ npm test -- --testPathPattern=auth
 ## Phase 5: Baserow Service
 
 ### 5.1 Baserow Client
-- [ ] Install `axios`
-- [ ] Create `src/services/baserow.service.ts`
-- [ ] Implement `BaserowService` class with axios instance
-- [ ] Configure base URL and API token from env
-- [ ] Store table IDs from env vars
+- [x] Install `axios`
+- [x] Create `src/services/baserow.service.ts`
+- [x] Implement `BaserowService` class with axios instance
+- [x] Configure base URL and API token from env
+- [x] Store table IDs from env vars
 
 ### 5.2 Baserow CRUD Methods
-- [ ] Implement `listRows<T>(table, options)` - with filters, pagination, ordering
-- [ ] Implement `getRow<T>(table, id)`
-- [ ] Implement `createRow<T>(table, data)`
-- [ ] Implement `updateRow<T>(table, id, data)`
-- [ ] Implement `deleteRow(table, id)`
-- [ ] Export singleton `baserow` instance
+- [x] Implement `listRows<T>(table, options)` - with filters, pagination, ordering
+- [x] Implement `getRow<T>(table, id)`
+- [x] Implement `createRow<T>(table, data)`
+- [x] Implement `updateRow<T>(table, id, data)`
+- [x] Implement `deleteRow(table, id)`
+- [x] Export singleton `baserow` instance
 
 ### 5.3 Baserow Error Handling
-- [ ] Create custom `BaserowError` class
-- [ ] Handle network errors
-- [ ] Handle 4xx/5xx responses with meaningful messages
-- [ ] Log all Baserow API calls
+- [x] Create custom `BaserowError` class
+- [x] Handle network errors
+- [x] Handle 4xx/5xx responses with meaningful messages
+- [x] Log all Baserow API calls
 
 ### Phase 5 Tests ✓
 ```typescript
@@ -295,10 +295,10 @@ npm test -- --testPathPattern=baserow
 ```
 
 ### Phase 5 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 5: Baserow service"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 5.1, 5.2, 5.3 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 5: Baserow service"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 5.1, 5.2, 5.3 above**
 
 ---
 
