@@ -815,16 +815,16 @@ npm test -- --testPathPattern="feedback|incidents"
 ## Phase 17: Email Components
 
 ### 17.1 Email Template Management
-- [ ] Create `src/api/templates.ts` and `src/hooks/useTemplates.ts`
-- [ ] Create `src/components/email/EmailTemplateEditor.tsx` - template form
-- [ ] Create `src/components/email/EmailPreview.tsx` - rendered preview
-- [ ] Create `src/pages/EmailTemplatesPage.tsx` - list and edit templates
+- [x] Create `src/api/templates.ts` and `src/hooks/useTemplates.ts`
+- [x] Create `src/components/email/EmailTemplateEditor.tsx` - template form
+- [x] Create `src/components/email/EmailPreview.tsx` - rendered preview
+- [x] Create `src/pages/EmailTemplatesPage.tsx` - list and edit templates
 
 ### 17.2 Send Email Dialog
-- [ ] Create `src/components/email/SendEmailDialog.tsx`
-- [ ] Template selector or custom message
-- [ ] Preview before sending
-- [ ] Send action with loading state
+- [x] Create `src/components/email/SendEmailDialog.tsx`
+- [x] Template selector or custom message
+- [x] Preview before sending
+- [x] Send action with loading state
 
 ### Phase 17 Tests ✓
 ```typescript
@@ -840,10 +840,10 @@ npm test -- --testPathPattern=email
 ```
 
 ### Phase 17 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 17: Email components"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 17.1, 17.2 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 17: Email components"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 17.1, 17.2 above**
 
 ---
 
