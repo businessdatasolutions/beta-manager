@@ -773,16 +773,16 @@ npm test -- --testPathPattern=testers
 ## Phase 16: Feedback & Incidents Pages
 
 ### 16.1 Feedback Page
-- [ ] Create `src/api/feedback.ts` and `src/hooks/useFeedback.ts`
-- [ ] Create `src/components/feedback/FeedbackCard.tsx` - card display
-- [ ] Create `src/components/feedback/FeedbackList.tsx` - list/kanban view
-- [ ] Create `src/pages/FeedbackPage.tsx` - list with status filters
+- [x] Create `src/api/feedback.ts` and `src/hooks/useFeedback.ts`
+- [x] Create `src/components/feedback/FeedbackCard.tsx` - card display
+- [x] Create `src/components/feedback/FeedbackList.tsx` - list/kanban view
+- [x] Create `src/pages/FeedbackPage.tsx` - list with status filters
 
 ### 16.2 Incidents Page
-- [ ] Create `src/api/incidents.ts` and `src/hooks/useIncidents.ts`
-- [ ] Create `src/components/incidents/IncidentCard.tsx`
-- [ ] Create `src/components/incidents/IncidentList.tsx`
-- [ ] Create `src/pages/IncidentsPage.tsx` - list with status/type filters
+- [x] Create `src/api/incidents.ts` and `src/hooks/useIncidents.ts`
+- [x] Create `src/components/incidents/IncidentCard.tsx`
+- [x] Create `src/components/incidents/IncidentList.tsx`
+- [x] Create `src/pages/IncidentsPage.tsx` - list with status/type filters
 
 ### Phase 16 Tests ✓
 ```typescript
@@ -805,10 +805,10 @@ npm test -- --testPathPattern="feedback|incidents"
 ```
 
 ### Phase 16 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 16: Feedback and incidents pages"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 16.1, 16.2 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 16: Feedback and incidents pages"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 16.1, 16.2 above**
 
 ---
 
