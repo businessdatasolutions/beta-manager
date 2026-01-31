@@ -642,12 +642,12 @@ npm test
 ## Phase 13: Frontend Layout & Navigation
 
 ### 13.1 App Layout
-- [ ] Create `src/components/layout/AppLayout.tsx` - sidebar + main content
-- [ ] Create `src/components/layout/Sidebar.tsx` - navigation links
-- [ ] Create `src/components/layout/Header.tsx` - user info, logout
+- [x] Create `src/components/layout/AppLayout.tsx` - sidebar + main content
+- [x] Create `src/components/layout/Sidebar.tsx` - navigation links
+- [x] Create `src/components/layout/Header.tsx` - user info, logout
 
 ### 13.2 Routing Setup
-- [ ] Configure routes in `App.tsx`:
+- [x] Configure routes in `App.tsx`:
   - `/login` - LoginPage
   - `/` - Dashboard (protected)
   - `/testers` - TestersPage (protected)
@@ -656,7 +656,7 @@ npm test
   - `/incidents` - IncidentsPage (protected)
 
 ### 13.3 shadcn/ui Components
-- [ ] Add components: Button, Card, Input, Label, Table, Badge, Dialog, Select, Tabs
+- [x] Add components: Button, Card, Input, Label, Table, Badge, Dialog, Select, Tabs
 
 ### Phase 13 Tests ✓
 ```bash
@@ -665,10 +665,10 @@ npm run dev                # Navigate through routes manually
 ```
 
 ### Phase 13 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 13: Frontend layout and navigation"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 13.1, 13.2, 13.3 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 13: Frontend layout and navigation"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 13.1, 13.2, 13.3 above**
 
 ---
 
