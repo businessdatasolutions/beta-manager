@@ -198,29 +198,29 @@ npm test -- --testPathPattern=middleware
 ## Phase 4: Authentication System
 
 ### 4.1 JWT Utilities
-- [ ] Install `jsonwebtoken`, `@types/jsonwebtoken`
-- [ ] Create `src/utils/jwt.ts` with `signToken()` and `verifyToken()` functions
-- [ ] Configure token expiry from env (default 24h)
+- [x] Install `jsonwebtoken`, `@types/jsonwebtoken`
+- [x] Create `src/utils/jwt.ts` with `signToken()` and `verifyToken()` functions
+- [x] Configure token expiry from env (default 24h)
 
 ### 4.2 Auth Middleware
-- [ ] Install `cookie-parser`
-- [ ] Create `src/middleware/auth.ts`
-- [ ] Extract JWT from httpOnly cookie
-- [ ] Verify token and attach user to request
-- [ ] Return 401 for invalid/missing tokens
+- [x] Install `cookie-parser`
+- [x] Create `src/middleware/auth.ts`
+- [x] Extract JWT from httpOnly cookie
+- [x] Verify token and attach user to request
+- [x] Return 401 for invalid/missing tokens
 
 ### 4.3 Auth Controller
-- [ ] Install `bcrypt`, `@types/bcrypt`
-- [ ] Create `src/controllers/auth.controller.ts`
-- [ ] Implement `login` - validate credentials, issue JWT, set cookie
-- [ ] Implement `logout` - clear cookie
-- [ ] Implement `me` - return current user info
+- [x] Install `bcrypt`, `@types/bcrypt`
+- [x] Create `src/controllers/auth.controller.ts`
+- [x] Implement `login` - validate credentials, issue JWT, set cookie
+- [x] Implement `logout` - clear cookie
+- [x] Implement `me` - return current user info
 
 ### 4.4 Auth Routes
-- [ ] Create `src/routes/auth.routes.ts`
-- [ ] `POST /auth/login` - login handler with validation
-- [ ] `POST /auth/logout` - logout handler (requires auth)
-- [ ] `GET /auth/me` - get current user (requires auth)
+- [x] Create `src/routes/auth.routes.ts`
+- [x] `POST /auth/login` - login handler with validation
+- [x] `POST /auth/logout` - logout handler (requires auth)
+- [x] `GET /auth/me` - get current user (requires auth)
 
 ### Phase 4 Tests ✓
 ```typescript
@@ -245,10 +245,10 @@ npm test -- --testPathPattern=auth
 ```
 
 ### Phase 4 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 4: Authentication system"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 4.1, 4.2, 4.3, 4.4 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 4: Authentication system"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 4.1, 4.2, 4.3, 4.4 above**
 
 ---
 
