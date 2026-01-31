@@ -719,28 +719,28 @@ npm test -- --testPathPattern=dashboard
 ## Phase 15: Testers Pages
 
 ### 15.1 Testers API Hooks
-- [ ] Create `src/api/testers.ts` - all tester API functions
-- [ ] Create `src/hooks/useTesters.ts` - list, single, mutations
+- [x] Create `src/api/testers.ts` - all tester API functions
+- [x] Create `src/hooks/useTesters.ts` - list, single, mutations
 
 ### 15.2 Testers List Components
-- [ ] Create `src/components/testers/TesterTable.tsx` - sortable table
-- [ ] Create `src/components/testers/TesterRow.tsx` - table row with actions
-- [ ] Create `src/components/testers/StageSelect.tsx` - stage dropdown
-- [ ] Create `src/components/testers/TesterForm.tsx` - create/edit form
+- [x] Create `src/components/testers/TesterTable.tsx` - sortable table
+- [x] Create `src/components/testers/TesterRow.tsx` - table row with actions
+- [x] Create `src/components/testers/StageSelect.tsx` - stage dropdown
+- [x] Create `src/components/testers/TesterForm.tsx` - create/edit form
 
 ### 15.3 Testers Page
-- [ ] Create `src/pages/TestersPage.tsx`
-- [ ] Table with filters (stage, activity)
-- [ ] "Add Tester" button → dialog with form
-- [ ] Row actions: view, edit stage, send email
+- [x] Create `src/pages/TestersPage.tsx`
+- [x] Table with filters (stage, activity)
+- [x] "Add Tester" button → dialog with form
+- [x] Row actions: view, edit stage, send email
 
 ### 15.4 Tester Detail Page
-- [ ] Create `src/pages/TesterDetailPage.tsx`
-- [ ] Profile header with stage badge
-- [ ] Days in test / remaining display
-- [ ] Create `src/components/testers/TesterTimeline.tsx` - event timeline
-- [ ] Feedback and incidents tabs
-- [ ] Send email dialog
+- [x] Create `src/pages/TesterDetailPage.tsx`
+- [x] Profile header with stage badge
+- [x] Days in test / remaining display
+- [x] Create `src/components/testers/TesterTimeline.tsx` - event timeline
+- [x] Feedback and incidents tabs
+- [x] Send email dialog
 
 ### Phase 15 Tests ✓
 ```typescript
@@ -763,10 +763,10 @@ npm test -- --testPathPattern=testers
 ```
 
 ### Phase 15 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 15: Testers pages"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 15.1, 15.2, 15.3, 15.4 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 15: Testers pages"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 15.1, 15.2, 15.3, 15.4 above**
 
 ---
 
