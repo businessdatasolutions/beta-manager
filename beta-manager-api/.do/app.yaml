@@ -1,5 +1,6 @@
-name: beta-manager-api
+name: beta-manager
 region: ams
+
 services:
   - name: api
     dockerfile_path: beta-manager-api/Dockerfile
@@ -12,7 +13,9 @@ services:
     instance_count: 1
     instance_size_slug: basic-xxs
     routes:
-      - path: /
+      - path: /api
+      - path: /auth
+      - path: /public
     health_check:
       http_path: /public/health
       initial_delay_seconds: 10
@@ -56,3 +59,19 @@ services:
         value: "${FRONTEND_URL}"
       - key: PLAY_STORE_LINK
         value: "${PLAY_STORE_LINK}"
+
+static_sites:
+  - name: web
+    build_command: cd beta-manager-web && npm install && npm run build
+    output_dir: beta-manager-web/dist
+    source_dir: /
+    github:
+      repo: businessdatasolutions/beta-manager
+      branch: main
+      deploy_on_push: true
+    routes:
+      - path: /
+    catchall_document: index.html
+    envs:
+      - key: VITE_API_URL
+        value: ""

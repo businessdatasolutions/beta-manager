@@ -11,7 +11,6 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  // Base path for GitHub Pages deployment
-  // Set to '/' for custom domain or '/repo-name/' for github.io/repo-name
-  base: process.env.GITHUB_PAGES ? '/beta-manager/' : '/',
+  // Base path - root for Digital Ocean deployment
+  base: '/',
 })
