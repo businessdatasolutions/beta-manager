@@ -5,6 +5,8 @@ import { standardLimiter } from './middleware/rateLimiter';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
 import authRoutes from './routes/auth.routes';
+import testersRoutes from './routes/testers.routes';
+import { authenticate } from './middleware/auth';
 
 const app: Express = express();
 
@@ -37,6 +39,7 @@ app.get('/health', (_req: Request, res: Response) => {
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/api/testers', authenticate, testersRoutes);
 
 // 404 handler
 app.use((_req: Request, res: Response) => {

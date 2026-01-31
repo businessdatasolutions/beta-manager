@@ -305,30 +305,30 @@ npm test -- --testPathPattern=baserow
 ## Phase 6: Testers API
 
 ### 6.1 Testers Controller
-- [ ] Create `src/controllers/testers.controller.ts`
-- [ ] Implement `listTesters` - with stage/activity filters
-- [ ] Implement `getTester` - single tester with computed stats
-- [ ] Implement `createTester` - create with default stage 'prospect'
-- [ ] Implement `updateTester` - partial update
-- [ ] Implement `deleteTester` - soft or hard delete
-- [ ] Implement `updateStage` - update stage with timestamp logging
-- [ ] Implement `getTesterTimeline` - fetch communications + events
+- [x] Create `src/controllers/testers.controller.ts`
+- [x] Implement `listTesters` - with stage/activity filters
+- [x] Implement `getTester` - single tester with computed stats
+- [x] Implement `createTester` - create with default stage 'prospect'
+- [x] Implement `updateTester` - partial update
+- [x] Implement `deleteTester` - soft or hard delete
+- [x] Implement `updateStage` - update stage with timestamp logging
+- [x] Implement `getTesterTimeline` - fetch communications + events
 
 ### 6.2 Testers Routes
-- [ ] Create `src/routes/testers.routes.ts`
-- [ ] `GET /api/testers` - list with query params
-- [ ] `GET /api/testers/:id` - single tester
-- [ ] `POST /api/testers` - create (validated)
-- [ ] `PATCH /api/testers/:id` - update (validated)
-- [ ] `DELETE /api/testers/:id` - delete
-- [ ] `POST /api/testers/:id/stage` - update stage
-- [ ] `GET /api/testers/:id/timeline` - timeline
+- [x] Create `src/routes/testers.routes.ts`
+- [x] `GET /api/testers` - list with query params
+- [x] `GET /api/testers/:id` - single tester
+- [x] `POST /api/testers` - create (validated)
+- [x] `PATCH /api/testers/:id` - update (validated)
+- [x] `DELETE /api/testers/:id` - delete
+- [x] `POST /api/testers/:id/stage` - update stage
+- [x] `GET /api/testers/:id/timeline` - timeline
 
 ### 6.3 Date Utilities
-- [ ] Create `src/utils/dates.ts`
-- [ ] Implement `calculateDaysInTest(startDate)` - days since started
-- [ ] Implement `calculateDaysRemaining(startDate)` - days left of 14
-- [ ] Implement `isInactive(lastActive, days)` - check inactivity
+- [x] Create `src/utils/dates.ts`
+- [x] Implement `calculateDaysInTest(startDate)` - days since started
+- [x] Implement `calculateDaysRemaining(startDate)` - days left of 14
+- [x] Implement `isInactive(lastActive, days)` - check inactivity
 
 ### Phase 6 Tests ✓
 ```typescript
@@ -356,7 +356,7 @@ npm test -- --testPathPattern=testers
 ```
 
 ### Phase 6 Completion
-- [ ] All tests pass
+- [x] All tests pass
 - [ ] `git commit -m "Phase 6: Testers API"`
 - [ ] `git push origin main`
 - [ ] **After successful push: check all boxes in 6.1, 6.2, 6.3 above**
