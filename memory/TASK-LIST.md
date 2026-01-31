@@ -468,18 +468,18 @@ npm test -- --testPathPattern="email|template"
 ## Phase 9: Dashboard API
 
 ### 9.1 Dashboard Controller
-- [ ] Create `src/controllers/dashboard.controller.ts`
-- [ ] Implement `getStats` - total testers, active count, open incidents, retention rate
-- [ ] Implement `getFunnel` - count per stage
-- [ ] Implement `getActivity` - recent communications, feedback, incidents
-- [ ] Implement `getAlerts` - inactive testers, new incidents, pending feedback
+- [x] Create `src/controllers/dashboard.controller.ts`
+- [x] Implement `getStats` - total testers, active count, open incidents, retention rate
+- [x] Implement `getFunnel` - count per stage
+- [x] Implement `getActivity` - recent communications, feedback, incidents
+- [x] Implement `getAlerts` - inactive testers, new incidents, pending feedback
 
 ### 9.2 Dashboard Routes
-- [ ] Create `src/routes/dashboard.routes.ts`
-- [ ] `GET /api/dashboard/stats`
-- [ ] `GET /api/dashboard/funnel`
-- [ ] `GET /api/dashboard/activity`
-- [ ] `GET /api/dashboard/alerts`
+- [x] Create `src/routes/dashboard.routes.ts`
+- [x] `GET /api/dashboard/stats`
+- [x] `GET /api/dashboard/funnel`
+- [x] `GET /api/dashboard/activity`
+- [x] `GET /api/dashboard/alerts`
 
 ### Phase 9 Tests ✓
 ```typescript
@@ -496,10 +496,10 @@ npm test -- --testPathPattern=dashboard
 ```
 
 ### Phase 9 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 9: Dashboard API"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 9.1, 9.2 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 9: Dashboard API"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 9.1, 9.2 above**
 
 ---
 
