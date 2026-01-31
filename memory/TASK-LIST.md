@@ -675,20 +675,20 @@ npm run dev                # Navigate through routes manually
 ## Phase 14: Dashboard Page
 
 ### 14.1 Dashboard API Hooks
-- [ ] Create `src/api/dashboard.ts` - API functions
-- [ ] Create `src/hooks/useDashboard.ts` - TanStack Query hooks
+- [x] Create `src/api/dashboard.ts` - API functions
+- [x] Create `src/hooks/useDashboard.ts` - TanStack Query hooks
 
 ### 14.2 Dashboard Components
-- [ ] Create `src/components/dashboard/StatsCard.tsx` - metric card
-- [ ] Create `src/components/dashboard/StageDistribution.tsx` - stage counts
-- [ ] Create `src/components/dashboard/TesterFunnel.tsx` - funnel visualization
-- [ ] Create `src/components/dashboard/ActivityFeed.tsx` - recent activity list
+- [x] Create `src/components/dashboard/StatsCard.tsx` - metric card
+- [x] Create `src/components/dashboard/StageDistribution.tsx` - stage counts
+- [x] Create `src/components/dashboard/TesterFunnel.tsx` - funnel visualization
+- [x] Create `src/components/dashboard/ActivityFeed.tsx` - recent activity list
 
 ### 14.3 Dashboard Page
-- [ ] Create `src/pages/DashboardPage.tsx`
-- [ ] Grid layout with stats cards
-- [ ] Activity feed section
-- [ ] Alerts section (needs attention items)
+- [x] Create `src/pages/DashboardPage.tsx`
+- [x] Grid layout with stats cards
+- [x] Activity feed section
+- [x] Alerts section (needs attention items)
 
 ### Phase 14 Tests ✓
 ```typescript
@@ -709,10 +709,10 @@ npm test -- --testPathPattern=dashboard
 ```
 
 ### Phase 14 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 14: Dashboard page"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 14.1, 14.2, 14.3 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 14: Dashboard page"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 14.1, 14.2, 14.3 above**
 
 ---
 
