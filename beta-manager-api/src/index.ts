@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import app from './app';
 import { initializeScheduler } from './jobs';
 import { logger } from './utils/logger';
