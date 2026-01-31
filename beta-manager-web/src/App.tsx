@@ -6,7 +6,8 @@ import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { TestersPage } from './pages/TestersPage';
 import { TesterDetailPage } from './pages/TesterDetailPage';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './components/ui';
+import { FeedbackPage } from './pages/FeedbackPage';
+import { IncidentsPage } from './pages/IncidentsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,45 +17,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-// Placeholder components for protected pages
-function FeedbackPage() {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Feedback</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Feedback Management</CardTitle>
-          <CardDescription>Coming in Phase 16</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-600">
-            Review and manage feedback submitted by your beta testers.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function IncidentsPage() {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Incidents</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Incident Tracking</CardTitle>
-          <CardDescription>Coming in Phase 16</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-600">
-            Track and resolve incidents reported during beta testing.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
 
 function App() {
   return (
