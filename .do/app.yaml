@@ -3,8 +3,10 @@ region: ams
 
 services:
   - name: api
-    dockerfile_path: beta-manager-api/Dockerfile
-    source_dir: /
+    environment_slug: node-js
+    build_command: npm install && npm run build
+    run_command: node dist/index.js
+    source_dir: beta-manager-api
     github:
       repo: businessdatasolutions/beta-manager
       branch: main
