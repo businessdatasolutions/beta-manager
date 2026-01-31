@@ -4,6 +4,8 @@ import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { AppLayout } from './components/layout/AppLayout';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { TestersPage } from './pages/TestersPage';
+import { TesterDetailPage } from './pages/TesterDetailPage';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './components/ui';
 
 const queryClient = new QueryClient({
@@ -16,44 +18,6 @@ const queryClient = new QueryClient({
 });
 
 // Placeholder components for protected pages
-function TestersPage() {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Testers</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Tester Management</CardTitle>
-          <CardDescription>Coming in Phase 15</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-600">
-            Manage your beta testers, track their progress, and communicate with them.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function TesterDetailPage() {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Tester Detail</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Tester Profile</CardTitle>
-          <CardDescription>Coming in Phase 15</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-600">
-            View detailed information about a specific tester.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
 function FeedbackPage() {
   return (
     <div>
