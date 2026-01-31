@@ -120,10 +120,13 @@ class BaserowService {
       if (options?.orderBy) params.append('order_by', options.orderBy);
 
       // Baserow filter format: filter__field__type=value
+      // Single select fields need single_select_equal filter type
+      const singleSelectFields = ['status', 'type', 'severity', 'stage', 'source', 'channel', 'direction'];
       if (options?.filters) {
         Object.entries(options.filters).forEach(([field, value]) => {
           if (value !== undefined && value !== null && value !== '') {
-            params.append(`filter__${field}__equal`, String(value));
+            const filterType = singleSelectFields.includes(field) ? 'single_select_equal' : 'equal';
+            params.append(`filter__${field}__${filterType}`, String(value));
           }
         });
       }
