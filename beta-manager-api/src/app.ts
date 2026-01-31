@@ -10,6 +10,7 @@ import feedbackRoutes from './routes/feedback.routes';
 import incidentsRoutes from './routes/incidents.routes';
 import communicationsRoutes from './routes/communications.routes';
 import dashboardRoutes from './routes/dashboard.routes';
+import templatesRoutes from './routes/templates.routes';
 import publicRoutes from './routes/public.routes';
 import { authenticate } from './middleware/auth';
 
@@ -49,6 +50,7 @@ app.use('/api/feedback', authenticate, feedbackRoutes);
 app.use('/api/incidents', authenticate, incidentsRoutes);
 app.use('/api/communications', authenticate, communicationsRoutes);
 app.use('/api/dashboard', authenticate, dashboardRoutes);
+app.use('/api/templates', authenticate, templatesRoutes);
 
 // Public routes (no auth required, strict rate limiting)
 app.use('/public', publicRoutes);
