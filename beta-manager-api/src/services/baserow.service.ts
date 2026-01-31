@@ -128,6 +128,9 @@ class BaserowService {
         });
       }
 
+      // Add user_field_names=true to use human-readable field names
+      params.append('user_field_names', 'true');
+
       const url = `/database/rows/table/${tableId}/?${params.toString()}`;
       const response = await this.client.get<BaserowListResponse<T>>(url);
 

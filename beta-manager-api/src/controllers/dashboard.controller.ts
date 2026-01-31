@@ -22,7 +22,7 @@ export async function getStats(
   try {
     // Fetch all testers to compute stats
     const testersResult = await baserow.listRows<BaserowTester>('testers', {
-      size: 1000,
+      size: 200, // Baserow max page size
     });
 
     const testers = testersResult.results;
@@ -70,7 +70,7 @@ export async function getFunnel(
   try {
     // Fetch all testers
     const testersResult = await baserow.listRows<BaserowTester>('testers', {
-      size: 1000,
+      size: 200, // Baserow max page size
     });
 
     const testers = testersResult.results;
@@ -182,7 +182,7 @@ export async function getAlerts(
     // Fetch data in parallel
     const [testersResult, feedbackResult, incidentsResult] = await Promise.all([
       baserow.listRows<BaserowTester>('testers', {
-        size: 1000,
+        size: 200, // Baserow max page size
       }),
       baserow.listRows<BaserowFeedback>('feedback', {
         filters: { status: 'new' },
