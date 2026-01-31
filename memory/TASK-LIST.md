@@ -850,16 +850,16 @@ npm test -- --testPathPattern=email
 ## Phase 18: Deployment Configuration
 
 ### 18.1 Backend Deployment
-- [ ] Create `Dockerfile` (multi-stage build)
-- [ ] Create `.do/app.yaml` for Digital Ocean
-- [ ] Configure all environment variables in DO
-- [ ] Test deployment manually
+- [x] Create `Dockerfile` (multi-stage build)
+- [x] Create `.do/app.yaml` for Digital Ocean
+- [x] Configure all environment variables in DO
+- [x] Test deployment manually
 
 ### 18.2 Frontend Deployment
-- [ ] Create `.github/workflows/deploy.yml` for GitHub Pages
-- [ ] Configure `VITE_API_URL` in GitHub repo variables
-- [ ] Configure `vite.config.ts` base path for GitHub Pages
-- [ ] Test deployment manually
+- [x] Create `.github/workflows/deploy.yml` for GitHub Pages
+- [x] Configure `VITE_API_URL` in GitHub repo variables
+- [x] Configure `vite.config.ts` base path for GitHub Pages
+- [x] Test deployment manually
 
 ### Phase 18 Tests ✓
 ```bash
@@ -875,10 +875,10 @@ npx serve dist
 ```
 
 ### Phase 18 Completion
-- [ ] All tests pass
-- [ ] `git commit -m "Phase 18: Deployment configuration"`
-- [ ] `git push origin main`
-- [ ] **After successful push: check all boxes in 18.1, 18.2 above**
+- [x] All tests pass
+- [x] `git commit -m "Phase 18: Deployment configuration"`
+- [x] `git push origin main`
+- [x] **After successful push: check all boxes in 18.1, 18.2 above**
 
 ---
 
