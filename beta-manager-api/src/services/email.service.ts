@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { env } from '../config/env';
 import { logger } from '../utils/logger';
 
@@ -15,38 +15,49 @@ interface SendEmailResult {
 }
 
 class EmailService {
-  private transporter: nodemailer.Transporter | null = null;
+  private resend: Resend | null = null;
 
-  private getTransporter(): nodemailer.Transporter {
-    if (!this.transporter) {
-      this.transporter = nodemailer.createTransport({
-        host: env.SMTP_HOST,
-        port: parseInt(env.SMTP_PORT, 10),
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: env.SMTP_USER,
-          pass: env.SMTP_PASS,
-        },
-      });
+  private getClient(): Resend {
+    if (!this.resend) {
+      if (!env.RESEND_API_KEY) {
+        throw new Error('RESEND_API_KEY is not configured');
+      }
+      this.resend = new Resend(env.RESEND_API_KEY);
     }
-    return this.transporter;
+    return this.resend;
   }
 
   async sendEmail({ to, subject, html }: SendEmailParams): Promise<SendEmailResult> {
     try {
-      const transporter = this.getTransporter();
+      if (!env.RESEND_API_KEY) {
+        logger.warn('Email service not configured - skipping send', { to, subject });
+        return {
+          success: false,
+          error: 'Email service not configured',
+        };
+      }
 
-      const info = await transporter.sendMail({
+      const client = this.getClient();
+
+      const { data, error } = await client.emails.send({
         from: env.EMAIL_FROM,
         to,
         subject,
         html,
       });
 
-      logger.info('Email sent successfully', { to, subject, messageId: info.messageId });
+      if (error) {
+        logger.error('Failed to send email', { to, subject, error: error.message });
+        return {
+          success: false,
+          error: error.message,
+        };
+      }
+
+      logger.info('Email sent successfully', { to, subject, messageId: data?.id });
       return {
         success: true,
-        messageId: info.messageId,
+        messageId: data?.id,
       };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
@@ -59,7 +70,7 @@ class EmailService {
   }
 
   isConfigured(): boolean {
-    return !!(env.SMTP_USER && env.SMTP_PASS);
+    return !!env.RESEND_API_KEY;
   }
 }
 
