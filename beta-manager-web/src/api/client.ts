@@ -10,22 +10,7 @@ export const apiClient = axios.create({
   },
 });
 
-// Base path for the app (must match BrowserRouter basename)
-const BASE_PATH = import.meta.env.PROD ? '/beta-manager' : '';
-
-// Response interceptor for handling 401 errors
-apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      // Clear any stored auth state and redirect to login
-      // Don't redirect if already on login page
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = `${BASE_PATH}/login`;
-      }
-    }
-    return Promise.reject(error);
-  }
-);
+// Note: 401 errors are handled by the auth store and ProtectedRoute component
+// No interceptor redirect needed - React Router handles navigation
 
 export default apiClient;
