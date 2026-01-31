@@ -13,6 +13,7 @@ import {
   StageSelect,
   TesterTimeline,
 } from '../components/testers';
+import { SendEmailDialog } from '../components/email';
 import {
   useTester,
   useTesterTimeline,
@@ -29,6 +30,7 @@ export function TesterDetailPage() {
 
   const [showStageDialog, setShowStageDialog] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showEmailDialog, setShowEmailDialog] = useState(false);
   const [newStage, setNewStage] = useState<TesterStage | ''>('');
 
   const { data: tester, isLoading, error } = useTester(testerId);
@@ -110,6 +112,12 @@ export function TesterDetailPage() {
           <StageBadge stage={tester.stage} />
         </div>
         <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setShowEmailDialog(true)}
+          >
+            Send Email
+          </Button>
           <Button
             variant="outline"
             onClick={() => {
@@ -314,6 +322,14 @@ export function TesterDetailPage() {
             </CardContent>
           </Card>
         </div>
+      )}
+
+      {/* Send Email Dialog */}
+      {showEmailDialog && (
+        <SendEmailDialog
+          tester={tester}
+          onClose={() => setShowEmailDialog(false)}
+        />
       )}
     </div>
   );
