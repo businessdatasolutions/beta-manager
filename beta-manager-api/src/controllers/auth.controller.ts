@@ -5,11 +5,13 @@ import { signToken } from '../utils/jwt';
 import { UnauthorizedError } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 
+// Use 'none' for cross-domain cookies (frontend on different domain than backend)
+const sameSiteValue: 'none' | 'lax' = process.env.NODE_ENV === 'production' ? 'none' : 'lax';
+
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  // Use 'none' for cross-domain cookies (frontend on different domain than backend)
-  sameSite: (process.env.NODE_ENV === 'production' ? 'none' : 'lax') as const,
+  sameSite: sameSiteValue,
   maxAge: 24 * 60 * 60 * 1000, // 24 hours
 };
 
@@ -47,7 +49,7 @@ export function logout(_req: Request, res: Response) {
   res.clearCookie('token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    sameSite: sameSiteValue,
   });
 
   res.json({ success: true });
