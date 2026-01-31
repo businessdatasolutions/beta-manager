@@ -32,11 +32,11 @@ export interface BaserowTester extends BaserowRow {
 
 export interface BaserowFeedback extends BaserowRow {
   tester: BaserowLinkField[];
-  type: { id: number; value: string; color: string };
-  severity?: { id: number; value: string; color: string };
+  type?: string;      // Plain text field in Baserow
+  severity?: string;  // Plain text field in Baserow
   title: string;
   content: string;
-  status: { id: number; value: string; color: string };
+  status?: string;    // Plain text field in Baserow
   device_info?: string;
   app_version?: string;
   screenshot_url?: string;
@@ -47,12 +47,12 @@ export interface BaserowFeedback extends BaserowRow {
 
 export interface BaserowIncident extends BaserowRow {
   tester?: BaserowLinkField[];
-  type: { id: number; value: string; color: string };
-  severity: { id: number; value: string; color: string };
+  type?: string;      // Plain text field in Baserow
+  severity?: string;  // Plain text field in Baserow
   title: string;
   description: string;
-  status: { id: number; value: string; color: string };
-  source: { id: number; value: string; color: string };
+  status?: string;    // Plain text field in Baserow
+  source?: string;    // Plain text field in Baserow
   crash_id?: string;
   resolved_at?: string;
   resolution_notes?: string;
@@ -62,12 +62,12 @@ export interface BaserowIncident extends BaserowRow {
 
 export interface BaserowCommunication extends BaserowRow {
   tester: BaserowLinkField[];
-  channel: { id: number; value: string; color: string };
-  direction: { id: number; value: string; color: string };
+  channel?: string;    // Plain text field in Baserow
+  direction?: string;  // Plain text field in Baserow
   subject?: string;
   content: string;
   template_name?: string;
-  status?: { id: number; value: string; color: string };
+  status?: string;     // Plain text field in Baserow
   sent_at: string;
   opened_at?: string;
   clicked_at?: string;

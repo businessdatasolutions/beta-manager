@@ -15,11 +15,11 @@ function transformFeedback(feedback: BaserowFeedback) {
     id: feedback.id,
     tester_id: feedback.tester?.[0]?.id,
     tester_name: feedback.tester?.[0]?.value,
-    type: feedback.type?.value as FeedbackType,
-    severity: feedback.severity?.value as FeedbackSeverity | undefined,
+    type: feedback.type as FeedbackType,
+    severity: feedback.severity as FeedbackSeverity | undefined,
     title: feedback.title,
     content: feedback.content,
-    status: feedback.status?.value as FeedbackStatus,
+    status: feedback.status as FeedbackStatus,
     device_info: feedback.device_info,
     app_version: feedback.app_version,
     screenshot_url: feedback.screenshot_url,
@@ -52,16 +52,16 @@ export async function listFeedback(
       filters: Object.keys(filters).length > 0 ? filters : undefined,
     });
 
-    // In-memory filtering for single select fields
+    // In-memory filtering for text fields
     let filtered = result.results;
     if (type) {
-      filtered = filtered.filter(f => f.type?.value === type);
+      filtered = filtered.filter(f => f.type === type);
     }
     if (status) {
-      filtered = filtered.filter(f => f.status?.value === status);
+      filtered = filtered.filter(f => f.status === status);
     }
     if (severity) {
-      filtered = filtered.filter(f => f.severity?.value === severity);
+      filtered = filtered.filter(f => f.severity === severity);
     }
 
     // Apply pagination to filtered results

@@ -130,7 +130,7 @@ export async function getActivity(
         type: 'communication' as const,
         id: c.id,
         date: c.sent_at,
-        title: c.subject || `${c.channel?.value} ${c.direction?.value}`,
+        title: c.subject || `${c.channel} ${c.direction}`,
         description: c.content?.substring(0, 100) + (c.content?.length > 100 ? '...' : ''),
         tester_id: c.tester?.[0]?.id,
         tester_name: c.tester?.[0]?.value,
@@ -144,9 +144,9 @@ export async function getActivity(
         tester_id: f.tester?.[0]?.id,
         tester_name: f.tester?.[0]?.value,
         metadata: {
-          feedback_type: f.type?.value,
-          severity: f.severity?.value,
-          status: f.status?.value,
+          feedback_type: f.type,
+          severity: f.severity,
+          status: f.status,
         },
       })),
       ...incidents.results.map((i) => ({
@@ -158,9 +158,9 @@ export async function getActivity(
         tester_id: i.tester?.[0]?.id,
         tester_name: i.tester?.[0]?.value,
         metadata: {
-          incident_type: i.type?.value,
-          severity: i.severity?.value,
-          status: i.status?.value,
+          incident_type: i.type,
+          severity: i.severity,
+          status: i.status,
         },
       })),
     ]
@@ -213,8 +213,8 @@ export async function getAlerts(
     const pendingFeedback = feedbackResult.results.map((f) => ({
       id: f.id,
       title: f.title,
-      type: f.type?.value,
-      severity: f.severity?.value,
+      type: f.type,
+      severity: f.severity,
       tester_id: f.tester?.[0]?.id,
       tester_name: f.tester?.[0]?.value,
       created_at: f.created_on,
@@ -224,8 +224,8 @@ export async function getAlerts(
     const openIncidents = incidentsResult.results.map((i) => ({
       id: i.id,
       title: i.title,
-      type: i.type?.value,
-      severity: i.severity?.value,
+      type: i.type,
+      severity: i.severity,
       tester_id: i.tester?.[0]?.id,
       tester_name: i.tester?.[0]?.value,
       created_at: i.created_on,

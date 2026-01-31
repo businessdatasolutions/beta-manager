@@ -305,7 +305,7 @@ export async function getTesterTimeline(
         type: 'communication' as const,
         id: c.id,
         date: c.sent_at,
-        title: c.subject || `${c.channel?.value} ${c.direction?.value}`,
+        title: c.subject || `${c.channel} ${c.direction}`,
         description: c.content?.substring(0, 100) + (c.content?.length > 100 ? '...' : ''),
       })),
       ...feedback.results.map((f) => ({
@@ -314,7 +314,7 @@ export async function getTesterTimeline(
         date: f.created_on,
         title: f.title,
         description: f.content?.substring(0, 100) + (f.content?.length > 100 ? '...' : ''),
-        metadata: { feedbackType: f.type?.value, severity: f.severity?.value },
+        metadata: { feedbackType: f.type, severity: f.severity },
       })),
       ...incidents.results.map((i) => ({
         type: 'incident' as const,
@@ -322,7 +322,7 @@ export async function getTesterTimeline(
         date: i.created_on,
         title: i.title,
         description: i.description?.substring(0, 100) + (i.description?.length > 100 ? '...' : ''),
-        metadata: { incidentType: i.type?.value, severity: i.severity?.value, status: i.status?.value },
+        metadata: { incidentType: i.type, severity: i.severity, status: i.status },
       })),
     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 

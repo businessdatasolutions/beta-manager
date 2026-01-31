@@ -16,12 +16,12 @@ function transformIncident(incident: BaserowIncident) {
     id: incident.id,
     tester_id: incident.tester?.[0]?.id,
     tester_name: incident.tester?.[0]?.value,
-    type: incident.type?.value as IncidentType,
-    severity: incident.severity?.value as IncidentSeverity,
+    type: incident.type as IncidentType,
+    severity: incident.severity as IncidentSeverity,
     title: incident.title,
     description: incident.description,
-    status: incident.status?.value as IncidentStatus,
-    source: incident.source?.value,
+    status: incident.status as IncidentStatus,
+    source: incident.source,
     crash_id: incident.crash_id,
     resolved_at: incident.resolved_at,
     resolution_notes: incident.resolution_notes,
@@ -53,16 +53,16 @@ export async function listIncidents(
       filters: Object.keys(filters).length > 0 ? filters : undefined,
     });
 
-    // In-memory filtering for single select fields
+    // In-memory filtering for text fields
     let filtered = result.results;
     if (type) {
-      filtered = filtered.filter(i => i.type?.value === type);
+      filtered = filtered.filter(i => i.type === type);
     }
     if (status) {
-      filtered = filtered.filter(i => i.status?.value === status);
+      filtered = filtered.filter(i => i.status === status);
     }
     if (severity) {
-      filtered = filtered.filter(i => i.severity?.value === severity);
+      filtered = filtered.filter(i => i.severity === severity);
     }
 
     // Apply pagination to filtered results
