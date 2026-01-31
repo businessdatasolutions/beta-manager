@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { AppLayout } from './components/layout/AppLayout';
 import { LoginPage } from './pages/LoginPage';
+import { DashboardPage } from './pages/DashboardPage';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './components/ui';
 
 const queryClient = new QueryClient({
@@ -15,25 +16,6 @@ const queryClient = new QueryClient({
 });
 
 // Placeholder components for protected pages
-function DashboardPage() {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Welcome to Beta Manager</CardTitle>
-          <CardDescription>Dashboard content coming in Phase 14</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-600">
-            This dashboard will display key metrics about your beta testing program.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
 function TestersPage() {
   return (
     <div>
