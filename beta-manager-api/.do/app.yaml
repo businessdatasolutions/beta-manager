@@ -1,0 +1,58 @@
+name: beta-manager-api
+region: ams
+services:
+  - name: api
+    dockerfile_path: beta-manager-api/Dockerfile
+    source_dir: /
+    github:
+      repo: businessdatasolutions/beta-manager
+      branch: main
+      deploy_on_push: true
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+    health_check:
+      http_path: /public/health
+      initial_delay_seconds: 10
+      period_seconds: 30
+      timeout_seconds: 3
+      success_threshold: 1
+      failure_threshold: 3
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "8080"
+      - key: JWT_SECRET
+        type: SECRET
+        value: "${JWT_SECRET}"
+      - key: ADMIN_EMAIL
+        type: SECRET
+        value: "${ADMIN_EMAIL}"
+      - key: ADMIN_PASSWORD_HASH
+        type: SECRET
+        value: "${ADMIN_PASSWORD_HASH}"
+      - key: BASEROW_API_TOKEN
+        type: SECRET
+        value: "${BASEROW_API_TOKEN}"
+      - key: BASEROW_TESTERS_TABLE_ID
+        value: "${BASEROW_TESTERS_TABLE_ID}"
+      - key: BASEROW_FEEDBACK_TABLE_ID
+        value: "${BASEROW_FEEDBACK_TABLE_ID}"
+      - key: BASEROW_INCIDENTS_TABLE_ID
+        value: "${BASEROW_INCIDENTS_TABLE_ID}"
+      - key: BASEROW_COMMUNICATIONS_TABLE_ID
+        value: "${BASEROW_COMMUNICATIONS_TABLE_ID}"
+      - key: BASEROW_TEMPLATES_TABLE_ID
+        value: "${BASEROW_TEMPLATES_TABLE_ID}"
+      - key: RESEND_API_KEY
+        type: SECRET
+        value: "${RESEND_API_KEY}"
+      - key: EMAIL_FROM
+        value: "${EMAIL_FROM}"
+      - key: FRONTEND_URL
+        value: "${FRONTEND_URL}"
+      - key: PLAY_STORE_LINK
+        value: "${PLAY_STORE_LINK}"
