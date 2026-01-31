@@ -144,7 +144,7 @@ class BaserowService {
     try {
       const tableId = this.getTableId(table);
       const response = await this.client.get<T>(
-        `/database/rows/table/${tableId}/${id}/`
+        `/database/rows/table/${tableId}/${id}/?user_field_names=true`
       );
       return response.data;
     } catch (error) {
@@ -156,7 +156,7 @@ class BaserowService {
     try {
       const tableId = this.getTableId(table);
       const response = await this.client.post<T>(
-        `/database/rows/table/${tableId}/`,
+        `/database/rows/table/${tableId}/?user_field_names=true`,
         data
       );
       return response.data;
@@ -173,7 +173,7 @@ class BaserowService {
     try {
       const tableId = this.getTableId(table);
       const response = await this.client.patch<T>(
-        `/database/rows/table/${tableId}/${id}/`,
+        `/database/rows/table/${tableId}/${id}/?user_field_names=true`,
         data
       );
       return response.data;
@@ -199,7 +199,7 @@ class BaserowService {
     try {
       const tableId = this.getTableId(table);
       const response = await this.client.post<{ items: T[] }>(
-        `/database/rows/table/${tableId}/batch/`,
+        `/database/rows/table/${tableId}/batch/?user_field_names=true`,
         { items }
       );
       return response.data.items;
@@ -215,7 +215,7 @@ class BaserowService {
     try {
       const tableId = this.getTableId(table);
       const response = await this.client.patch<{ items: T[] }>(
-        `/database/rows/table/${tableId}/batch/`,
+        `/database/rows/table/${tableId}/batch/?user_field_names=true`,
         { items }
       );
       return response.data.items;
