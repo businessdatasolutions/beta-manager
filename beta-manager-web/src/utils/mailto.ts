@@ -55,12 +55,12 @@ export function buildMailtoUrl(
   // Convert HTML body to plain text
   const plainBody = htmlToPlainText(body);
 
-  // Build URL with encoded parameters
-  const params = new URLSearchParams();
-  params.set('subject', subject);
-  params.set('body', plainBody);
+  // Use encodeURIComponent for proper mailto encoding
+  // URLSearchParams uses + for spaces, but mailto needs %20
+  const encodedSubject = encodeURIComponent(subject);
+  const encodedBody = encodeURIComponent(plainBody);
 
-  const url = `mailto:${encodeURIComponent(to)}?${params.toString()}`;
+  const url = `mailto:${encodeURIComponent(to)}?subject=${encodedSubject}&body=${encodedBody}`;
 
   // Warn if URL is too long (2000 chars is safe limit)
   if (url.length > 2000) {

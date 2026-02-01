@@ -32,6 +32,7 @@ export function SendEmailDialog({
   const [selectedTemplate, setSelectedTemplate] = useState('');
   const [customSubject, setCustomSubject] = useState('');
   const [customBody, setCustomBody] = useState('');
+  const [copied, setCopied] = useState(false);
 
   const { data: templatesData, isLoading: templatesLoading } = useTemplates();
 
@@ -215,21 +216,33 @@ export function SendEmailDialog({
             <Button variant="outline" onClick={onClose}>
               Cancel
             </Button>
+
+            {/* Copy button as fallback */}
+            <Button
+              variant="outline"
+              disabled={!canSend}
+              onClick={() => {
+                const text = `To: ${tester.email}\nSubject: ${previewSubject}\n\n${previewBody}`;
+                navigator.clipboard.writeText(text).then(() => {
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                });
+              }}
+            >
+              {copied ? 'Copied!' : 'Copy Email'}
+            </Button>
+
+            {/* Direct mailto link - user clicks this directly */}
             {mailtoUrl ? (
               <a
                 href={mailtoUrl}
+                onClick={() => setTimeout(onClose, 500)}
                 className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                onClick={() => {
-                  // Close dialog after a short delay to let mailto open
-                  setTimeout(onClose, 500);
-                }}
               >
-                📧 Open in Email Client
+                Open in Mail
               </a>
             ) : (
-              <Button disabled>
-                📧 Open in Email Client
-              </Button>
+              <Button disabled>Open in Mail</Button>
             )}
           </div>
         </CardContent>
