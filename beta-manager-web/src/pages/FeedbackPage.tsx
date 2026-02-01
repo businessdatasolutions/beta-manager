@@ -45,8 +45,8 @@ export function FeedbackPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4 mb-6">
-        <div className="w-48">
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="w-full sm:w-48">
           <Select
             value={statusFilter}
             onChange={(e) => {
@@ -112,11 +112,11 @@ export function FeedbackPage() {
 
       {/* Pagination */}
       {data && data.totalPages > 1 && (
-        <div className="flex items-center justify-between mt-6">
-          <p className="text-sm text-gray-600">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6">
+          <p className="text-sm text-gray-600 text-center sm:text-left">
             Showing {data.results.length} of {data.count} items
           </p>
-          <div className="flex gap-2">
+          <div className="flex justify-center gap-2">
             <Button
               variant="outline"
               size="sm"

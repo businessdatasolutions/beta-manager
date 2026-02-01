@@ -103,23 +103,25 @@ export function TesterDetailPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
           <Link to="/testers" className="text-blue-600 hover:underline">
-            &larr; Back to Testers
+            &larr; Back
           </Link>
-          <h1 className="text-2xl font-bold">{tester.name}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">{tester.name}</h1>
           <StageBadge stage={tester.stage} />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
+            size="sm"
             onClick={() => setShowEmailDialog(true)}
           >
             Send Email
           </Button>
           <Button
             variant="outline"
+            size="sm"
             onClick={() => {
               setNewStage(tester.stage);
               setShowStageDialog(true);
@@ -129,6 +131,7 @@ export function TesterDetailPage() {
           </Button>
           <Button
             variant="outline"
+            size="sm"
             className="text-red-600 hover:text-red-700"
             onClick={() => setShowDeleteConfirm(true)}
           >

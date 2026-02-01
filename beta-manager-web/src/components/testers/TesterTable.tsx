@@ -100,16 +100,16 @@ export function TesterTable({
   }
 
   return (
-    <div className="border rounded-lg">
-      <Table>
+    <div className="border rounded-lg overflow-auto">
+      <Table className="min-w-[700px]">
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Stage</TableHead>
-            <TableHead>Last Active</TableHead>
-            <TableHead>Started</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="whitespace-nowrap">Name</TableHead>
+            <TableHead className="whitespace-nowrap">Email</TableHead>
+            <TableHead className="whitespace-nowrap">Stage</TableHead>
+            <TableHead className="whitespace-nowrap">Last Active</TableHead>
+            <TableHead className="whitespace-nowrap">Started</TableHead>
+            <TableHead className="text-right whitespace-nowrap">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -134,7 +134,7 @@ export function TesterTable({
                 {formatDate(tester.started_at)}
               </TableCell>
               <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
+                <div className="flex flex-col sm:flex-row justify-end gap-1 sm:gap-2">
                   {onStageChange && (
                     <Button
                       variant="outline"

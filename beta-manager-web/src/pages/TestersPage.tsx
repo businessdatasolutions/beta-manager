@@ -56,14 +56,14 @@ export function TestersPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <h1 className="text-2xl font-bold">Testers</h1>
         <Button onClick={() => setShowAddDialog(true)}>Add Tester</Button>
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4 mb-6">
-        <div className="flex-1 max-w-sm">
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="flex-1 sm:max-w-sm">
           <Input
             placeholder="Search by name or email..."
             value={searchQuery}
@@ -73,7 +73,7 @@ export function TestersPage() {
             }}
           />
         </div>
-        <div className="w-48">
+        <div className="w-full sm:w-48">
           <StageSelect
             value={stageFilter}
             onChange={(stage) => {
@@ -101,11 +101,11 @@ export function TestersPage() {
 
       {/* Pagination */}
       {data && data.totalPages > 1 && (
-        <div className="flex items-center justify-between mt-4">
-          <p className="text-sm text-gray-600">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-4">
+          <p className="text-sm text-gray-600 text-center sm:text-left">
             Showing {data.results.length} of {data.count} testers
           </p>
-          <div className="flex gap-2">
+          <div className="flex justify-center gap-2">
             <Button
               variant="outline"
               size="sm"
