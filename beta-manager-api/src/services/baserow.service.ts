@@ -79,11 +79,11 @@ class BaserowService {
     }
 
     if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<{ error?: string; detail?: string }>;
+      const axiosError = error as AxiosError<{ error?: string; detail?: unknown }>;
       const status = axiosError.response?.status || 500;
       const message =
         axiosError.response?.data?.error ||
-        axiosError.response?.data?.detail ||
+        (typeof axiosError.response?.data?.detail === 'string' ? axiosError.response.data.detail : JSON.stringify(axiosError.response?.data?.detail)) ||
         axiosError.message ||
         `Baserow ${operation} failed`;
 

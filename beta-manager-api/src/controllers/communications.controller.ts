@@ -89,7 +89,7 @@ export async function createCommunication(
     const { tester_id, channel, direction, subject, content, template_name, status } = req.body as CreateCommunicationInput;
 
     const comm = await baserow.createRow<BaserowCommunication>('communications', {
-      tester: [tester_id],
+      tester: tester_id.toString(),
       channel,
       direction,
       subject,

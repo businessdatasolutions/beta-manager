@@ -120,9 +120,9 @@ export async function createIncident(
       crash_id,
     };
 
-    // Only add tester link if provided
+    // Only add tester reference if provided
     if (tester_id) {
-      incidentData.tester = [tester_id];
+      incidentData.tester = tester_id.toString();
     }
 
     const incident = await baserow.createRow<BaserowIncident>('incidents', incidentData);

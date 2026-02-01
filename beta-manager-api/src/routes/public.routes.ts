@@ -38,8 +38,9 @@ router.post(
       }
 
       // Create feedback - only include defined values
+      // Note: tester field is a text field in Baserow, not a link field
       const feedbackData: Record<string, unknown> = {
-        tester: [tester_id],
+        tester: tester_id.toString(),
         type,
         title,
         content,

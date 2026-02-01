@@ -110,7 +110,7 @@ export async function createFeedback(
     const { tester_id, type, severity, title, content, device_info, app_version, screenshot_url } = req.body as CreateFeedbackInput;
 
     const feedback = await baserow.createRow<BaserowFeedback>('feedback', {
-      tester: [tester_id],
+      tester: tester_id.toString(),
       type,
       severity,
       title,

@@ -33,7 +33,7 @@ export async function hasExistingDropoutIncident(testerId: number): Promise<bool
 export async function createDropoutIncident(tester: BaserowTester): Promise<BaserowIncident | null> {
   try {
     const incident = await baserow.createRow<BaserowIncident>('incidents', {
-      tester: [tester.id],
+      tester: tester.id.toString(),
       type: 'dropout',
       severity: 'major',
       title: `Inactive tester: ${tester.name}`,
