@@ -5,8 +5,9 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select } from '../ui/select';
 import { useTemplates } from '../../hooks/useTemplates';
-import { useSendTesterEmail } from '../../hooks/useTesters';
+import { useRenderTesterEmail } from '../../hooks/useTesters';
 import type { Tester } from '../../types/tester';
+import type { RenderedEmail } from '../../api/testers';
 
 interface SendEmailDialogProps {
   tester: Tester;
@@ -17,15 +18,16 @@ interface SendEmailDialogProps {
 export function SendEmailDialog({
   tester,
   onClose,
-  onSuccess,
 }: SendEmailDialogProps) {
   const [mode, setMode] = useState<'template' | 'custom'>('template');
   const [selectedTemplate, setSelectedTemplate] = useState('');
   const [customSubject, setCustomSubject] = useState('');
   const [customBody, setCustomBody] = useState('');
+  const [renderedEmail, setRenderedEmail] = useState<RenderedEmail | null>(null);
+  const [copySuccess, setCopySuccess] = useState<'subject' | 'body' | 'all' | null>(null);
 
   const { data: templatesData, isLoading: templatesLoading } = useTemplates();
-  const sendEmail = useSendTesterEmail();
+  const renderEmail = useRenderTesterEmail();
 
   const templates = templatesData?.results.filter((t) => t.is_active) || [];
 
@@ -36,42 +38,80 @@ export function SendEmailDialog({
     }
   }, [templates, selectedTemplate]);
 
-  function handleSend() {
+  // Clear rendered email when inputs change
+  useEffect(() => {
+    setRenderedEmail(null);
+  }, [mode, selectedTemplate, customSubject, customBody]);
+
+  function handleRender() {
     if (mode === 'template' && selectedTemplate) {
-      sendEmail.mutate(
+      renderEmail.mutate(
         { id: tester.id, params: { template_name: selectedTemplate } },
         {
-          onSuccess: () => {
-            onSuccess?.();
-            onClose();
+          onSuccess: (data) => {
+            setRenderedEmail(data);
           },
         }
       );
     } else if (mode === 'custom' && customSubject && customBody) {
-      sendEmail.mutate(
+      renderEmail.mutate(
         {
           id: tester.id,
           params: { custom_subject: customSubject, custom_body: customBody },
         },
         {
-          onSuccess: () => {
-            onSuccess?.();
-            onClose();
+          onSuccess: (data) => {
+            setRenderedEmail(data);
           },
         }
       );
     }
   }
 
-  const canSend =
+  async function copyToClipboard(text: string, type: 'subject' | 'body' | 'all') {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopySuccess(type);
+      setTimeout(() => setCopySuccess(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  }
+
+  function handleCopySubject() {
+    if (renderedEmail) {
+      copyToClipboard(renderedEmail.subject, 'subject');
+    }
+  }
+
+  function handleCopyBody() {
+    if (renderedEmail) {
+      // Strip HTML tags for plain text copy
+      const plainText = renderedEmail.body.replace(/<[^>]*>/g, '');
+      copyToClipboard(plainText, 'body');
+    }
+  }
+
+  function handleCopyAll() {
+    if (renderedEmail) {
+      const plainBody = renderedEmail.body.replace(/<[^>]*>/g, '');
+      const fullText = `Subject: ${renderedEmail.subject}\n\n${plainBody}`;
+      copyToClipboard(fullText, 'all');
+    }
+  }
+
+  const canRender =
     (mode === 'template' && selectedTemplate) ||
     (mode === 'custom' && customSubject.trim() && customBody.trim());
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <Card className="w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+      <Card className="w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <CardHeader>
-          <CardTitle>Send Email to {tester.name}</CardTitle>
+          <CardTitle>Prepare Email for {tester.name}</CardTitle>
+          <p className="text-sm text-gray-500">
+            Generate email content to copy into your email client
+          </p>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Mode Selection */}
@@ -116,30 +156,6 @@ export function SendEmailDialog({
                   </Select>
                 )}
               </div>
-
-              {selectedTemplate && (
-                <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                  <h4 className="text-sm font-medium text-gray-700">Preview</h4>
-                  {templates
-                    .filter((t) => t.name === selectedTemplate)
-                    .map((template) => (
-                      <div key={template.name}>
-                        <p className="text-sm">
-                          <span className="text-gray-500">Subject:</span>{' '}
-                          {template.subject}
-                        </p>
-                        <p className="text-sm text-gray-600 mt-2 line-clamp-4">
-                          {template.body}
-                        </p>
-                        {template.variables.length > 0 && (
-                          <p className="text-xs text-gray-400 mt-2">
-                            Variables: {template.variables.join(', ')}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                </div>
-              )}
             </div>
           ) : (
             <div className="space-y-4">
@@ -160,37 +176,100 @@ export function SendEmailDialog({
                   value={customBody}
                   onChange={(e) => setCustomBody(e.target.value)}
                   placeholder="Enter your message..."
-                  className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[150px] resize-y"
+                  className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[100px] resize-y"
                 />
               </div>
 
               <p className="text-xs text-gray-500">
-                Available variables: {'{'}name{'}'}, {'{'}email{'}'}, {'{'}
-                days_in_test{'}'}, {'{'}days_remaining{'}'}
+                Available variables: {'{{'}name{'}}'}, {'{{'}email{'}}'}, {'{{'}
+                days_in_test{'}}'}, {'{{'}days_remaining{'}}'}
               </p>
             </div>
           )}
 
-          {sendEmail.error && (
+          {/* Generate Button */}
+          {!renderedEmail && (
+            <Button
+              onClick={handleRender}
+              disabled={!canRender || renderEmail.isPending}
+              className="w-full"
+            >
+              {renderEmail.isPending ? 'Generating...' : 'Generate Email'}
+            </Button>
+          )}
+
+          {renderEmail.error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded text-sm">
-              Failed to send email. Please try again.
+              Failed to render email. Please try again.
+            </div>
+          )}
+
+          {/* Rendered Email Preview */}
+          {renderedEmail && (
+            <div className="space-y-4 border-t pt-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-medium">Email Preview</h3>
+                <p className="text-sm text-gray-500">To: {renderedEmail.to}</p>
+              </div>
+
+              {/* Subject */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label>Subject</Label>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCopySubject}
+                  >
+                    {copySuccess === 'subject' ? 'Copied!' : 'Copy Subject'}
+                  </Button>
+                </div>
+                <div className="bg-gray-50 p-3 rounded border text-sm">
+                  {renderedEmail.subject}
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label>Body</Label>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCopyBody}
+                  >
+                    {copySuccess === 'body' ? 'Copied!' : 'Copy Body'}
+                  </Button>
+                </div>
+                <div
+                  className="bg-gray-50 p-3 rounded border text-sm max-h-[200px] overflow-y-auto"
+                  dangerouslySetInnerHTML={{ __html: renderedEmail.body }}
+                />
+              </div>
+
+              {/* Copy All Button */}
+              <Button
+                onClick={handleCopyAll}
+                className="w-full"
+                variant={copySuccess === 'all' ? 'outline' : 'default'}
+              >
+                {copySuccess === 'all' ? 'Copied to Clipboard!' : 'Copy All'}
+              </Button>
             </div>
           )}
 
           <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button
-              variant="outline"
-              onClick={onClose}
-              disabled={sendEmail.isPending}
-            >
-              Cancel
+            <Button variant="outline" onClick={onClose}>
+              {renderedEmail ? 'Done' : 'Cancel'}
             </Button>
-            <Button
-              onClick={handleSend}
-              disabled={!canSend || sendEmail.isPending}
-            >
-              {sendEmail.isPending ? 'Sending...' : 'Send Email'}
-            </Button>
+            {renderedEmail && (
+              <Button
+                variant="outline"
+                onClick={() => setRenderedEmail(null)}
+              >
+                Start Over
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>

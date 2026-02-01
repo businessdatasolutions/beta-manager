@@ -1,28 +1,18 @@
 import { baserow } from '../services/baserow.service';
-import { templateService } from '../services/template.service';
 import { logger } from '../utils/logger';
 import { BaserowTester } from '../types/baserow';
 import { calculateDaysInTest } from '../utils/dates';
-
-// Email schedule: day -> template name
-const EMAIL_SCHEDULE: Record<number, string> = {
-  3: 'day_3_checkin',
-  7: 'day_7_midpoint',
-  12: 'day_12_wrapup',
-  14: 'day_14_completion',
-};
 
 // Stages that should receive scheduled emails
 const ACTIVE_STAGES = ['active', 'onboarded', 'installed'];
 
 /**
- * Process a single tester for scheduled emails
+ * Process a single tester - mark as completed on day 14
  */
 export async function processTester(tester: BaserowTester): Promise<{
   testerId: number;
-  action: 'email_sent' | 'marked_complete' | 'skipped' | 'error';
+  action: 'marked_complete' | 'skipped' | 'error';
   day?: number;
-  template?: string;
   error?: string;
 }> {
   const testerId = tester.id;
@@ -39,78 +29,49 @@ export async function processTester(tester: BaserowTester): Promise<{
   }
 
   const daysInTest = calculateDaysInTest(tester.started_at);
-  const templateName = EMAIL_SCHEDULE[daysInTest];
 
-  // No email scheduled for this day
-  if (!templateName) {
-    return { testerId, action: 'skipped', day: daysInTest };
-  }
-
-  try {
-    // Send the scheduled email
-    const result = await templateService.sendTemplateEmail(tester, templateName);
-
-    if (!result.success) {
-      logger.warn('Failed to send scheduled email', {
-        testerId,
-        day: daysInTest,
-        template: templateName,
-        error: result.error,
-      });
-      return { testerId, action: 'error', day: daysInTest, template: templateName, error: result.error };
-    }
-
-    logger.info('Sent scheduled email', {
-      testerId,
-      day: daysInTest,
-      template: templateName,
-    });
-
-    // On day 14, mark tester as completed
-    if (daysInTest === 14) {
+  // On day 14 or later, mark tester as completed
+  if (daysInTest >= 14) {
+    try {
       await baserow.updateRow('testers', testerId, {
         stage: 'completed',
         completed_at: new Date().toISOString(),
       });
 
-      logger.info('Marked tester as completed', { testerId });
-      return { testerId, action: 'marked_complete', day: daysInTest, template: templateName };
+      logger.info('Marked tester as completed', { testerId, daysInTest });
+      return { testerId, action: 'marked_complete', day: daysInTest };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Error marking tester as completed', {
+        testerId,
+        error: errorMessage,
+      });
+      return { testerId, action: 'error', day: daysInTest, error: errorMessage };
     }
-
-    return { testerId, action: 'email_sent', day: daysInTest, template: templateName };
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    logger.error('Error processing tester for daily email', {
-      testerId,
-      day: daysInTest,
-      error: errorMessage,
-    });
-    return { testerId, action: 'error', day: daysInTest, template: templateName, error: errorMessage };
   }
+
+  return { testerId, action: 'skipped', day: daysInTest };
 }
 
 /**
- * Run the daily email job
- * Queries all active testers and sends scheduled emails based on days in test
+ * Run the daily job
+ * Queries all active testers and marks those at 14+ days as completed
  */
 export async function runDailyEmailJob(): Promise<{
   processed: number;
-  emailsSent: number;
   completed: number;
   errors: number;
 }> {
-  logger.info('Starting daily email job');
+  logger.info('Starting daily completion check job');
 
   const stats = {
     processed: 0,
-    emailsSent: 0,
     completed: 0,
     errors: 0,
   };
 
   try {
     // Fetch all testers (we'll filter in memory for simplicity)
-    // In production, you might want to add Baserow filters
     const result = await baserow.listRows<BaserowTester>('testers', {
       size: 1000,
     });
@@ -128,11 +89,7 @@ export async function runDailyEmailJob(): Promise<{
       stats.processed++;
 
       switch (result.action) {
-        case 'email_sent':
-          stats.emailsSent++;
-          break;
         case 'marked_complete':
-          stats.emailsSent++;
           stats.completed++;
           break;
         case 'error':
@@ -141,9 +98,9 @@ export async function runDailyEmailJob(): Promise<{
       }
     }
 
-    logger.info('Daily email job completed', stats);
+    logger.info('Daily completion check job completed', stats);
   } catch (error) {
-    logger.error('Daily email job failed', { error });
+    logger.error('Daily completion check job failed', { error });
     throw error;
   }
 

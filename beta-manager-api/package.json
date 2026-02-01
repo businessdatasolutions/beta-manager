@@ -31,7 +31,6 @@
     "jsonwebtoken": "^9.0.2",
     "node-cron": "^4.2.1",
     "nodemailer": "^7.0.13",
-    "resend": "^6.9.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "winston": "^3.19.0",

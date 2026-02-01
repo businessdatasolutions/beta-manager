@@ -1,9 +1,8 @@
 import { baserow } from './baserow.service';
-import { emailService } from './email.service';
 import { env } from '../config/env';
 import { logger } from '../utils/logger';
-import { BaserowEmailTemplate, BaserowTester, BaserowCommunication } from '../types/baserow';
-import { calculateDaysInTest, calculateDaysRemaining, formatDateForBaserow } from '../utils/dates';
+import { BaserowEmailTemplate, BaserowTester } from '../types/baserow';
+import { calculateDaysInTest, calculateDaysRemaining } from '../utils/dates';
 
 interface TemplateVariables {
   name: string;
@@ -15,10 +14,9 @@ interface TemplateVariables {
   [key: string]: string;
 }
 
-interface SendTemplateEmailResult {
-  success: boolean;
-  messageId?: string;
-  error?: string;
+interface RenderEmailResult {
+  subject: string;
+  body: string;
 }
 
 class TemplateService {
@@ -85,21 +83,18 @@ class TemplateService {
   }
 
   /**
-   * Send a template email to a tester
+   * Render a template email for a tester (without sending)
    */
-  async sendTemplateEmail(
+  async renderTemplateEmail(
     tester: BaserowTester,
     templateName: string,
     extraVariables?: Record<string, string>
-  ): Promise<SendTemplateEmailResult> {
+  ): Promise<RenderEmailResult | null> {
     // Fetch template
     const template = await this.getTemplate(templateName);
 
     if (!template) {
-      return {
-        success: false,
-        error: `Template "${templateName}" not found or inactive`,
-      };
+      return null;
     }
 
     // Build variables
@@ -115,31 +110,19 @@ class TemplateService {
 
     // Render subject and body
     const subject = this.renderTemplate(template.subject, variables);
-    const html = this.renderTemplate(template.body, variables);
+    const body = this.renderTemplate(template.body, variables);
 
-    // Send email
-    const result = await emailService.sendEmail({
-      to: tester.email,
-      subject,
-      html,
-    });
-
-    if (result.success) {
-      // Log communication
-      await this.logCommunication(tester.id, subject, html, templateName);
-    }
-
-    return result;
+    return { subject, body };
   }
 
   /**
-   * Send a custom email to a tester
+   * Render a custom email for a tester (without sending)
    */
-  async sendCustomEmail(
+  renderCustomEmail(
     tester: BaserowTester,
     subject: string,
     body: string
-  ): Promise<SendTemplateEmailResult> {
+  ): RenderEmailResult {
     // Build variables for any placeholders in custom content
     const variables = this.getTemplateVariables({
       id: tester.id,
@@ -152,45 +135,7 @@ class TemplateService {
     const renderedSubject = this.renderTemplate(subject, variables);
     const renderedBody = this.renderTemplate(body, variables);
 
-    // Send email
-    const result = await emailService.sendEmail({
-      to: tester.email,
-      subject: renderedSubject,
-      html: renderedBody,
-    });
-
-    if (result.success) {
-      // Log communication
-      await this.logCommunication(tester.id, renderedSubject, renderedBody);
-    }
-
-    return result;
-  }
-
-  /**
-   * Log a communication to Baserow
-   */
-  private async logCommunication(
-    testerId: number,
-    subject: string,
-    content: string,
-    templateName?: string
-  ): Promise<void> {
-    try {
-      await baserow.createRow<BaserowCommunication>('communications', {
-        tester: [testerId],
-        channel: 'email',
-        direction: 'outbound',
-        subject,
-        content,
-        template_name: templateName,
-        status: 'sent',
-        sent_at: formatDateForBaserow(new Date()),
-      });
-    } catch (error) {
-      logger.error('Failed to log communication', { testerId, error });
-      // Don't throw - email was sent successfully
-    }
+    return { subject: renderedSubject, body: renderedBody };
   }
 
   /**

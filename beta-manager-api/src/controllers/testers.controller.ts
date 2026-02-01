@@ -335,7 +335,7 @@ export async function getTesterTimeline(
   }
 }
 
-export async function sendEmail(
+export async function renderEmail(
   req: Request,
   res: Response,
   next: NextFunction
@@ -351,24 +351,30 @@ export async function sendEmail(
     // Get tester
     const tester = await baserow.getRow<BaserowTester>('testers', id);
 
-    let result;
+    let subject: string;
+    let body: string;
+
     if (template_name) {
-      // Send template email
-      result = await templateService.sendTemplateEmail(tester, template_name);
+      // Render template email
+      const result = await templateService.renderTemplateEmail(tester, template_name);
+      if (!result) {
+        throw new BadRequestError(`Template "${template_name}" not found or inactive`);
+      }
+      subject = result.subject;
+      body = result.body;
     } else if (custom_subject && custom_body) {
-      // Send custom email
-      result = await templateService.sendCustomEmail(tester, custom_subject, custom_body);
+      // Render custom email with variables
+      const result = templateService.renderCustomEmail(tester, custom_subject, custom_body);
+      subject = result.subject;
+      body = result.body;
     } else {
       throw new BadRequestError('Either template_name or both custom_subject and custom_body are required');
     }
 
-    if (!result.success) {
-      throw new BadRequestError(result.error || 'Failed to send email');
-    }
-
     res.json({
-      success: true,
-      message_id: result.messageId,
+      to: tester.email,
+      subject,
+      body,
     });
   } catch (error) {
     if (error instanceof BaserowError && error.statusCode === 404) {

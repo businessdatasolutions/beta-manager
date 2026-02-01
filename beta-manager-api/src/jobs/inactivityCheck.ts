@@ -1,5 +1,4 @@
 import { baserow } from '../services/baserow.service';
-import { templateService } from '../services/template.service';
 import { logger } from '../utils/logger';
 import { BaserowTester, BaserowIncident } from '../types/baserow';
 import { isInactive } from '../utils/dates';
@@ -7,9 +6,6 @@ import { INACTIVITY_THRESHOLD_DAYS } from '../config/constants';
 
 // Stages that should be checked for inactivity
 const ACTIVE_STAGES = ['active', 'onboarded', 'installed'];
-
-// Template for re-engagement email (optional)
-const REENGAGEMENT_TEMPLATE = 'reengagement';
 
 /**
  * Check if a dropout incident already exists for a tester
@@ -59,36 +55,11 @@ export async function createDropoutIncident(tester: BaserowTester): Promise<Base
 }
 
 /**
- * Optionally send a re-engagement email to an inactive tester
- */
-export async function sendReengagementEmail(tester: BaserowTester): Promise<boolean> {
-  try {
-    const result = await templateService.sendTemplateEmail(tester, REENGAGEMENT_TEMPLATE);
-
-    if (result.success) {
-      logger.info('Sent re-engagement email', { testerId: tester.id });
-      return true;
-    } else {
-      // Template might not exist, which is fine
-      logger.debug('Could not send re-engagement email', {
-        testerId: tester.id,
-        error: result.error,
-      });
-      return false;
-    }
-  } catch (error) {
-    logger.warn('Failed to send re-engagement email', { testerId: tester.id, error });
-    return false;
-  }
-}
-
-/**
  * Process a single tester for inactivity
  */
 export async function processTesterInactivity(tester: BaserowTester): Promise<{
   testerId: number;
   action: 'incident_created' | 'already_exists' | 'not_inactive' | 'error';
-  emailSent?: boolean;
   error?: string;
 }> {
   const testerId = tester.id;
@@ -117,10 +88,7 @@ export async function processTesterInactivity(tester: BaserowTester): Promise<{
       return { testerId, action: 'error', error: 'Failed to create incident' };
     }
 
-    // Optionally send re-engagement email
-    const emailSent = await sendReengagementEmail(tester);
-
-    return { testerId, action: 'incident_created', emailSent };
+    return { testerId, action: 'incident_created' };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     logger.error('Error processing tester inactivity', { testerId, error: errorMessage });
@@ -136,7 +104,6 @@ export async function runInactivityCheck(): Promise<{
   processed: number;
   incidentsCreated: number;
   alreadyExists: number;
-  emailsSent: number;
   errors: number;
 }> {
   logger.info('Starting inactivity check job');
@@ -145,7 +112,6 @@ export async function runInactivityCheck(): Promise<{
     processed: 0,
     incidentsCreated: 0,
     alreadyExists: 0,
-    emailsSent: 0,
     errors: 0,
   };
 
@@ -170,9 +136,6 @@ export async function runInactivityCheck(): Promise<{
       switch (result.action) {
         case 'incident_created':
           stats.incidentsCreated++;
-          if (result.emailSent) {
-            stats.emailsSent++;
-          }
           break;
         case 'already_exists':
           stats.alreadyExists++;

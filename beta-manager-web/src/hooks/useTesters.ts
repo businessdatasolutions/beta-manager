@@ -7,9 +7,9 @@ import {
   deleteTester,
   updateTesterStage,
   getTesterTimeline,
-  sendTesterEmail,
+  renderTesterEmail,
   type ListTestersParams,
-  type SendEmailParams,
+  type RenderEmailParams,
 } from '../api/testers';
 import type { CreateTesterInput, UpdateTesterInput, TesterStage } from '../types/tester';
 
@@ -91,14 +91,9 @@ export function useUpdateTesterStage() {
   });
 }
 
-export function useSendTesterEmail() {
-  const queryClient = useQueryClient();
-
+export function useRenderTesterEmail() {
   return useMutation({
-    mutationFn: ({ id, params }: { id: number; params: SendEmailParams }) =>
-      sendTesterEmail(id, params),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ['testers', id, 'timeline'] });
-    },
+    mutationFn: ({ id, params }: { id: number; params: RenderEmailParams }) =>
+      renderTesterEmail(id, params),
   });
 }

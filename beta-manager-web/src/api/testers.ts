@@ -122,18 +122,24 @@ export async function getTesterTimeline(
   }));
 }
 
-export interface SendEmailParams {
+export interface RenderEmailParams {
   template_name?: string;
   custom_subject?: string;
   custom_body?: string;
 }
 
-export async function sendTesterEmail(
+export interface RenderedEmail {
+  to: string;
+  subject: string;
+  body: string;
+}
+
+export async function renderTesterEmail(
   id: number,
-  params: SendEmailParams
-): Promise<{ message: string }> {
-  const response = await apiClient.post<{ message: string }>(
-    `/api/testers/${id}/send-email`,
+  params: RenderEmailParams
+): Promise<RenderedEmail> {
+  const response = await apiClient.post<RenderedEmail>(
+    `/api/testers/${id}/render-email`,
     params
   );
   return response.data;

@@ -19,10 +19,6 @@ const envSchema = z.object({
   BASEROW_COMMUNICATIONS_TABLE_ID: z.string().min(1),
   BASEROW_TEMPLATES_TABLE_ID: z.string().min(1),
 
-  // Email (Resend)
-  RESEND_API_KEY: z.string().min(1),
-  EMAIL_FROM: z.string().min(1),
-
   // URLs
   FRONTEND_URL: z.string().url(),
   PLAY_STORE_LINK: z.string().url().optional(),
