@@ -37,17 +37,19 @@ router.post(
         throw error;
       }
 
-      // Create feedback
-      const feedback = await baserow.createRow<BaserowFeedback>('feedback', {
+      // Create feedback - only include defined values
+      const feedbackData: Record<string, unknown> = {
         tester: [tester_id],
         type,
-        severity,
         title,
         content,
-        device_info,
-        app_version,
         status: 'new',
-      });
+      };
+      if (severity) feedbackData.severity = severity;
+      if (device_info) feedbackData.device_info = device_info;
+      if (app_version) feedbackData.app_version = app_version;
+
+      const feedback = await baserow.createRow<BaserowFeedback>('feedback', feedbackData);
 
       logger.info('Public feedback submitted', {
         feedbackId: feedback.id,
