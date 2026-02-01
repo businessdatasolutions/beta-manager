@@ -5,7 +5,6 @@ import {
   updateTesterSchema,
   updateStageSchema,
   testerQuerySchema,
-  sendEmailSchema,
 } from '../schemas/tester.schema';
 import {
   listTesters,
@@ -15,7 +14,6 @@ import {
   deleteTester,
   updateStage,
   getTesterTimeline,
-  renderEmail,
 } from '../controllers/testers.controller';
 
 const router = Router();
@@ -40,8 +38,5 @@ router.post('/:id/stage', validateBody(updateStageSchema), updateStage);
 
 // GET /api/testers/:id/timeline - Get tester timeline
 router.get('/:id/timeline', getTesterTimeline);
-
-// POST /api/testers/:id/render-email - Render email content for copying
-router.post('/:id/render-email', validateBody(sendEmailSchema), renderEmail);
 
 export default router;

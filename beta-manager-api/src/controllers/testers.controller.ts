@@ -6,9 +6,7 @@ import {
   UpdateTesterInput,
   UpdateStageInput,
   TesterQueryInput,
-  SendEmailInput,
 } from '../schemas/tester.schema';
-import { templateService } from '../services/template.service';
 import {
   BaserowTester,
   BaserowFeedback,
@@ -327,55 +325,6 @@ export async function getTesterTimeline(
     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     res.json({ timeline });
-  } catch (error) {
-    if (error instanceof BaserowError && error.statusCode === 404) {
-      return next(new NotFoundError('Tester not found'));
-    }
-    next(error);
-  }
-}
-
-export async function renderEmail(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    const id = parseInt(req.params.id as string, 10);
-    if (isNaN(id)) {
-      throw new BadRequestError('Invalid tester ID');
-    }
-
-    const { template_name, custom_subject, custom_body } = req.body as SendEmailInput;
-
-    // Get tester
-    const tester = await baserow.getRow<BaserowTester>('testers', id);
-
-    let subject: string;
-    let body: string;
-
-    if (template_name) {
-      // Render template email
-      const result = await templateService.renderTemplateEmail(tester, template_name);
-      if (!result) {
-        throw new BadRequestError(`Template "${template_name}" not found or inactive`);
-      }
-      subject = result.subject;
-      body = result.body;
-    } else if (custom_subject && custom_body) {
-      // Render custom email with variables
-      const result = templateService.renderCustomEmail(tester, custom_subject, custom_body);
-      subject = result.subject;
-      body = result.body;
-    } else {
-      throw new BadRequestError('Either template_name or both custom_subject and custom_body are required');
-    }
-
-    res.json({
-      to: tester.email,
-      subject,
-      body,
-    });
   } catch (error) {
     if (error instanceof BaserowError && error.statusCode === 404) {
       return next(new NotFoundError('Tester not found'));

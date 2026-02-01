@@ -1,19 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select } from '../ui/select';
 import { useTemplates } from '../../hooks/useTemplates';
-import { useRenderTesterEmail } from '../../hooks/useTesters';
 import type { Tester } from '../../types/tester';
-import type { RenderedEmail } from '../../api/testers';
+import {
+  buildMailtoUrl,
+  replaceTemplateVariables,
+  calculateDaysInTest,
+  calculateDaysRemaining,
+  htmlToPlainText,
+} from '../../utils/mailto';
 
 interface SendEmailDialogProps {
   tester: Tester;
   onClose: () => void;
   onSuccess?: () => void;
 }
+
+// Environment config (these would come from a config in production)
+const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+const PLAY_STORE_LINK = import.meta.env.VITE_PLAY_STORE_LINK || 'https://play.google.com/store/apps/details?id=com.bds.bonmon';
 
 export function SendEmailDialog({
   tester,
@@ -23,11 +32,8 @@ export function SendEmailDialog({
   const [selectedTemplate, setSelectedTemplate] = useState('');
   const [customSubject, setCustomSubject] = useState('');
   const [customBody, setCustomBody] = useState('');
-  const [renderedEmail, setRenderedEmail] = useState<RenderedEmail | null>(null);
-  const [copySuccess, setCopySuccess] = useState<'subject' | 'body' | 'all' | null>(null);
 
   const { data: templatesData, isLoading: templatesLoading } = useTemplates();
-  const renderEmail = useRenderTesterEmail();
 
   const templates = templatesData?.results.filter((t) => t.is_active) || [];
 
@@ -38,79 +44,68 @@ export function SendEmailDialog({
     }
   }, [templates, selectedTemplate]);
 
-  // Clear rendered email when inputs change
-  useEffect(() => {
-    setRenderedEmail(null);
-  }, [mode, selectedTemplate, customSubject, customBody]);
+  // Build template variables for this tester
+  const templateVariables = useMemo(() => ({
+    name: tester.name,
+    email: tester.email,
+    days_in_test: calculateDaysInTest(tester.started_at).toString(),
+    days_remaining: calculateDaysRemaining(tester.started_at).toString(),
+    feedback_link: `${FRONTEND_URL}/public/feedback?tester=${tester.id}`,
+    play_store_link: PLAY_STORE_LINK,
+  }), [tester]);
 
-  function handleRender() {
-    if (mode === 'template' && selectedTemplate) {
-      renderEmail.mutate(
-        { id: tester.id, params: { template_name: selectedTemplate } },
-        {
-          onSuccess: (data) => {
-            setRenderedEmail(data);
-          },
-        }
-      );
+  // Get the current template
+  const currentTemplate = templates.find((t) => t.name === selectedTemplate);
+
+  // Generate mailto URL based on current mode
+  const mailtoUrl = useMemo(() => {
+    if (mode === 'template' && currentTemplate) {
+      const subject = replaceTemplateVariables(currentTemplate.subject, templateVariables);
+      const body = replaceTemplateVariables(currentTemplate.body, templateVariables);
+      return buildMailtoUrl(tester.email, subject, body);
     } else if (mode === 'custom' && customSubject && customBody) {
-      renderEmail.mutate(
-        {
-          id: tester.id,
-          params: { custom_subject: customSubject, custom_body: customBody },
-        },
-        {
-          onSuccess: (data) => {
-            setRenderedEmail(data);
-          },
-        }
-      );
+      const subject = replaceTemplateVariables(customSubject, templateVariables);
+      const body = replaceTemplateVariables(customBody, templateVariables);
+      return buildMailtoUrl(tester.email, subject, body);
     }
-  }
+    return null;
+  }, [mode, currentTemplate, customSubject, customBody, tester.email, templateVariables]);
 
-  async function copyToClipboard(text: string, type: 'subject' | 'body' | 'all') {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopySuccess(type);
-      setTimeout(() => setCopySuccess(null), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
+  // Preview of the plain text body
+  const previewBody = useMemo(() => {
+    if (mode === 'template' && currentTemplate) {
+      const rendered = replaceTemplateVariables(currentTemplate.body, templateVariables);
+      return htmlToPlainText(rendered);
+    } else if (mode === 'custom' && customBody) {
+      const rendered = replaceTemplateVariables(customBody, templateVariables);
+      return htmlToPlainText(rendered);
     }
-  }
+    return '';
+  }, [mode, currentTemplate, customBody, templateVariables]);
 
-  function handleCopySubject() {
-    if (renderedEmail) {
-      copyToClipboard(renderedEmail.subject, 'subject');
+  const previewSubject = useMemo(() => {
+    if (mode === 'template' && currentTemplate) {
+      return replaceTemplateVariables(currentTemplate.subject, templateVariables);
+    } else if (mode === 'custom' && customSubject) {
+      return replaceTemplateVariables(customSubject, templateVariables);
     }
-  }
+    return '';
+  }, [mode, currentTemplate, customSubject, templateVariables]);
 
-  function handleCopyBody() {
-    if (renderedEmail) {
-      // Strip HTML tags for plain text copy
-      const plainText = renderedEmail.body.replace(/<[^>]*>/g, '');
-      copyToClipboard(plainText, 'body');
-    }
-  }
-
-  function handleCopyAll() {
-    if (renderedEmail) {
-      const plainBody = renderedEmail.body.replace(/<[^>]*>/g, '');
-      const fullText = `Subject: ${renderedEmail.subject}\n\n${plainBody}`;
-      copyToClipboard(fullText, 'all');
-    }
-  }
-
-  const canRender =
+  const canSend =
     (mode === 'template' && selectedTemplate) ||
     (mode === 'custom' && customSubject.trim() && customBody.trim());
+
+  // Check if URL might be too long
+  const urlTooLong = mailtoUrl && mailtoUrl.length > 2000;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <Card className="w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <CardHeader>
-          <CardTitle>Prepare Email for {tester.name}</CardTitle>
+          <CardTitle>Email {tester.name}</CardTitle>
           <p className="text-sm text-gray-500">
-            Generate email content to copy into your email client
+            Select a template and click to open in your email client
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -187,87 +182,53 @@ export function SendEmailDialog({
             </div>
           )}
 
-          {/* Generate Button */}
-          {!renderedEmail && (
-            <Button
-              onClick={handleRender}
-              disabled={!canRender || renderEmail.isPending}
-              className="w-full"
-            >
-              {renderEmail.isPending ? 'Generating...' : 'Generate Email'}
-            </Button>
-          )}
-
-          {renderEmail.error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded text-sm">
-              Failed to render email. Please try again.
-            </div>
-          )}
-
-          {/* Rendered Email Preview */}
-          {renderedEmail && (
-            <div className="space-y-4 border-t pt-4">
+          {/* Preview Section */}
+          {canSend && (
+            <div className="space-y-3 border-t pt-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-medium">Email Preview</h3>
-                <p className="text-sm text-gray-500">To: {renderedEmail.to}</p>
+                <h3 className="font-medium text-sm">Preview</h3>
+                <span className="text-xs text-gray-500">To: {tester.email}</span>
               </div>
 
-              {/* Subject */}
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label>Subject</Label>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleCopySubject}
-                  >
-                    {copySuccess === 'subject' ? 'Copied!' : 'Copy Subject'}
-                  </Button>
+                <div className="bg-gray-50 p-3 rounded border">
+                  <p className="text-xs text-gray-500 mb-1">Subject:</p>
+                  <p className="text-sm font-medium">{previewSubject}</p>
                 </div>
-                <div className="bg-gray-50 p-3 rounded border text-sm">
-                  {renderedEmail.subject}
+
+                <div className="bg-gray-50 p-3 rounded border max-h-[150px] overflow-y-auto">
+                  <p className="text-xs text-gray-500 mb-1">Body (plain text):</p>
+                  <p className="text-sm whitespace-pre-wrap">{previewBody.slice(0, 500)}{previewBody.length > 500 ? '...' : ''}</p>
                 </div>
               </div>
 
-              {/* Body */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label>Body</Label>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleCopyBody}
-                  >
-                    {copySuccess === 'body' ? 'Copied!' : 'Copy Body'}
-                  </Button>
+              {urlTooLong && (
+                <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-3 py-2 rounded text-sm">
+                  ⚠️ Email is long and may be truncated in some email clients.
                 </div>
-                <div
-                  className="bg-gray-50 p-3 rounded border text-sm max-h-[200px] overflow-y-auto"
-                  dangerouslySetInnerHTML={{ __html: renderedEmail.body }}
-                />
-              </div>
-
-              {/* Copy All Button */}
-              <Button
-                onClick={handleCopyAll}
-                className="w-full"
-                variant={copySuccess === 'all' ? 'outline' : 'default'}
-              >
-                {copySuccess === 'all' ? 'Copied to Clipboard!' : 'Copy All'}
-              </Button>
+              )}
             </div>
           )}
 
+          {/* Action Buttons */}
           <div className="flex justify-end gap-3 pt-4 border-t">
             <Button variant="outline" onClick={onClose}>
-              {renderedEmail ? 'Done' : 'Cancel'}
+              Cancel
             </Button>
-            {renderedEmail && (
-              <Button
-                variant="outline"
-                onClick={() => setRenderedEmail(null)}
+            {mailtoUrl ? (
+              <a
+                href={mailtoUrl}
+                className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                onClick={() => {
+                  // Close dialog after a short delay to let mailto open
+                  setTimeout(onClose, 500);
+                }}
               >
-                Start Over
+                📧 Open in Email Client
+              </a>
+            ) : (
+              <Button disabled>
+                📧 Open in Email Client
               </Button>
             )}
           </div>

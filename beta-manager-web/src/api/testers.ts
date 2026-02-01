@@ -121,26 +121,3 @@ export async function getTesterTimeline(
     } as TesterTimelineItem['data'],
   }));
 }
-
-export interface RenderEmailParams {
-  template_name?: string;
-  custom_subject?: string;
-  custom_body?: string;
-}
-
-export interface RenderedEmail {
-  to: string;
-  subject: string;
-  body: string;
-}
-
-export async function renderTesterEmail(
-  id: number,
-  params: RenderEmailParams
-): Promise<RenderedEmail> {
-  const response = await apiClient.post<RenderedEmail>(
-    `/api/testers/${id}/render-email`,
-    params
-  );
-  return response.data;
-}
