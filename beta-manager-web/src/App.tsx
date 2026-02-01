@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { AppLayout } from './components/layout/AppLayout';
 import { LoginPage } from './pages/LoginPage';
+import { PublicFeedbackPage } from './pages/PublicFeedbackPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { TestersPage } from './pages/TestersPage';
 import { TesterDetailPage } from './pages/TesterDetailPage';
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/public/feedback" element={<PublicFeedbackPage />} />
 
           {/* Protected routes with layout */}
           <Route
