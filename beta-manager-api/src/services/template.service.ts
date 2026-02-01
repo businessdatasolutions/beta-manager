@@ -48,7 +48,7 @@ class TemplateService {
       email: tester.email,
       days_in_test: calculateDaysInTest(tester.started_at).toString(),
       days_remaining: calculateDaysRemaining(tester.started_at).toString(),
-      feedback_link: `${env.FRONTEND_URL}/public/feedback?tester=${tester.id}`,
+      feedback_link: `${env.FRONTEND_URL}/feedback-form?tester=${tester.id}`,
       play_store_link: env.PLAY_STORE_LINK || '',
     };
   }
@@ -156,7 +156,7 @@ class TemplateService {
       email: 'test@example.com',
       days_in_test: '7',
       days_remaining: '7',
-      feedback_link: `${env.FRONTEND_URL}/public/feedback?tester=1`,
+      feedback_link: `${env.FRONTEND_URL}/feedback-form?tester=1`,
       play_store_link: env.PLAY_STORE_LINK || 'https://play.google.com',
       ...testData,
     };

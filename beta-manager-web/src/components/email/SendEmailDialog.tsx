@@ -51,7 +51,7 @@ export function SendEmailDialog({
     email: tester.email,
     days_in_test: calculateDaysInTest(tester.started_at).toString(),
     days_remaining: calculateDaysRemaining(tester.started_at).toString(),
-    feedback_link: `${FRONTEND_URL}/public/feedback?tester=${tester.id}`,
+    feedback_link: `${FRONTEND_URL}/feedback-form?tester=${tester.id}`,
     play_store_link: PLAY_STORE_LINK,
   }), [tester]);
 

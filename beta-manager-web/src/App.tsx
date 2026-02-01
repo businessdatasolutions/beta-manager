@@ -26,7 +26,7 @@ function App() {
         <Routes>
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/public/feedback" element={<PublicFeedbackPage />} />
+          <Route path="/feedback-form" element={<PublicFeedbackPage />} />
 
           {/* Protected routes with layout */}
           <Route
