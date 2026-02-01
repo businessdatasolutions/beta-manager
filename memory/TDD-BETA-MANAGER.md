@@ -2,8 +2,8 @@
 
 ## 1. Document Overview
 
-**Document Version:** 1.0
-**Last Updated:** 2025-01-31
+**Document Version:** 1.1
+**Last Updated:** 2026-02-01
 **Project:** Bonnenmonster Beta Manager
 **Platform:** Web Dashboard (Vite + React + Node.js)
 
@@ -456,7 +456,7 @@ export interface EmailTemplate {
 | Field | Type | Required | Notes |
 |-------|------|----------|-------|
 | id | Auto-increment | Yes | Primary key |
-| tester | Link to testers | Yes | Foreign key |
+| tester | Text | Yes | Tester ID as string (not a link field) |
 | type | Single select | Yes | bug, feature_request, ux_issue, general |
 | severity | Single select | No | critical, major, minor |
 | title | Text | Yes | Short summary |
@@ -474,7 +474,7 @@ export interface EmailTemplate {
 | Field | Type | Required | Notes |
 |-------|------|----------|-------|
 | id | Auto-increment | Yes | Primary key |
-| tester | Link to testers | No | Foreign key (optional) |
+| tester | Text | No | Tester ID as string (not a link field, optional) |
 | type | Single select | Yes | crash, bug, ux_complaint, dropout, uninstall |
 | severity | Single select | Yes | critical, major, minor |
 | title | Text | Yes | Short summary |
@@ -492,7 +492,7 @@ export interface EmailTemplate {
 | Field | Type | Required | Notes |
 |-------|------|----------|-------|
 | id | Auto-increment | Yes | Primary key |
-| tester | Link to testers | Yes | Foreign key |
+| tester | Text | Yes | Tester ID as string (not a link field) |
 | channel | Single select | Yes | email, whatsapp, linkedin, phone, other |
 | direction | Single select | Yes | outbound, inbound |
 | subject | Text | No | Email subject |
@@ -594,9 +594,12 @@ POST   /api/templates/:id/preview      # Preview with test data
 ### 6.8 Public (No Auth)
 
 ```
-POST   /public/feedback                # Submit feedback (testers)
+POST   /public/feedback                # Submit feedback (testers) - API endpoint
 GET    /public/health                  # Health check
 ```
+
+**Frontend Public Route:**
+- `GET /feedback-form?tester=<id>` - Public feedback form page (Dutch labels)
 
 ---
 
@@ -821,7 +824,7 @@ export class EmailService {
 
     // Log communication
     await baserow.createRow<Communication>('communications', {
-      tester: [tester.id], // Baserow link field format
+      tester: tester.id.toString(), // Baserow text field (not link field)
       channel: 'email',
       direction: 'outbound',
       subject,
@@ -852,7 +855,7 @@ export class EmailService {
 
     // Log communication
     await baserow.createRow<Communication>('communications', {
-      tester: [tester.id],
+      tester: tester.id.toString(),
       channel: 'email',
       direction: 'outbound',
       subject,
@@ -973,7 +976,7 @@ export function scheduleInactivityCheck() {
           if (existing.length === 0) {
             // Create dropout incident
             await baserow.createRow<Incident>('incidents', {
-              tester: [tester.id],
+              tester: tester.id.toString(),
               type: 'dropout',
               severity: 'major',
               title: `${tester.name} inactive for ${inactiveDays} days`,

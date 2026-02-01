@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Bonnenmonster Beta Manager** - A web dashboard for managing beta testers of the Bonnenmonster Flutter receipt scanning app. The project automates the 14-day beta testing lifecycle: recruitment, onboarding, automated email sequences, feedback collection, incident tracking, and production transition.
 
-**Current Status**: Planning phase. PRD and TDD complete, implementation not yet started.
+**Current Status**: Implementation complete. Both frontend and backend deployed on Digital Ocean.
 
 ## CRITICAL: Development Workflow
 
@@ -69,7 +69,8 @@ Alternative paths: `declined`, `dropped_out`, `unresponsive`
 - `GET/POST /api/feedback` - Feedback management
 - `GET/POST /api/incidents` - Incident tracking
 - `GET /api/dashboard/*` - Dashboard stats and activity
-- `POST /public/feedback` - Public feedback form (no auth)
+- `POST /public/feedback` - Public feedback API (no auth)
+- `GET /feedback-form` - Public feedback form page (frontend route, no auth)
 
 ## Automated Emails (Cron)
 
