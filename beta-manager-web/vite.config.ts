@@ -11,6 +11,5 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  // Base path - root for Digital Ocean deployment
-  base: '/',
+  base: process.env.GITHUB_PAGES ? '/beta-manager/' : '/',
 })
